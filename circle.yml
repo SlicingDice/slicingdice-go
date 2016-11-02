@@ -1,0 +1,4 @@
+test:
+  override:
+    - mv tests_and_examples/examples/ .
+    - go run tests_and_examples/run_query_tests.go
