@@ -170,6 +170,10 @@ func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]inter
 		result, err = s.client.TopValues(queryDataTranslated)
 	} else if queryType == "aggregation" {
 		result, err = s.client.Aggregation(queryDataTranslated)
+	} else if queryType == "result" {
+		result, err = s.client.Result(queryDataTranslated)
+	} else if queryType == "score" {
+		result, err = s.client.Aggregation(queryDataTranslated)
 	}
 	if result == nil {
 		return nil, err
@@ -279,6 +283,8 @@ func main() {
 		"count_event",
 		"top_values",
 		"aggregation",
+		"result",
+		"score",
 	}
 
 	sdTester := newSlicingDiceTester(
