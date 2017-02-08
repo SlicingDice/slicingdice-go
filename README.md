@@ -1,7 +1,9 @@
 # SlicingDice Official Go Client (v1.0)
 ![](https://circleci.com/gh/SlicingDice/slicingdice-go/tree/master.svg?style=shield)
 
-Official Go client for [SlicingDice](http://www.slicingdice.com/), Data Warehouse and Analytics Database as a Service.
+Official Go client for [SlicingDice](http://www.slicingdice.com/), Data Warehouse and Analytics Database as a Service.  
+
+[SlicingDice](http://www.slicingdice.com/) is a serverless, API-based, easy-to-use and really cost-effective alternative to Amazon Redshift and Google BigQuery.
 
 ## Documentation
 
