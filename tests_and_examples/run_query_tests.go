@@ -295,7 +295,7 @@ func printResults(sdTester *SlicingDiceTester) {
 
 func main() {
 	// SlicingDice queries to be tested. Must match the JSON file name.
-	var queryTypes = [4]string{
+	var queryTypes = [6]string{
 		"count_entity",
 		"count_event",
 		"top_values",
