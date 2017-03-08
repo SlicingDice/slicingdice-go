@@ -30,11 +30,12 @@ const (
 	SAVED              = "/query/saved/"
 )
 
-// APIKey is used to access the keys that we insert in the SlicingDice API.
-// There is only one rule: if you put the master key, you do not put the other,
-// because already by default the client uses for everything. Otherwise,
-// should a key to writing, if you want to write (index data, create fields)
-// and should put another reading (make queries).
+/* APIKey is used to access the keys that we insert in the SlicingDice API.
+There is only one rule: if you put the master key, you do not put the other,
+because already by default the client uses for everything. Otherwise,
+use a key to writing, if you want to write (index data, create fields)
+and use a key to reading (make queries).
+*/
 type APIKey struct {
 	WriteKey  string
 	ReadKey   string
@@ -66,7 +67,7 @@ func hasValidSavedQuery(query interface{}) error {
 	queryConverted := query.(map[string]interface{})
 	listQueryTypes := []string{"count/entity", "count/event", "count/entity/total", "aggregation", "top_values"}
 	if !stringInSlice(queryConverted["type"].(string), listQueryTypes) {
-		return errors.New("Top Values Validator: this dictionary don't have query type valid.")
+		return errors.New("Saved Query Validator: this dictionary don't have query type valid.")
 	}
 	return nil
 }
@@ -76,13 +77,13 @@ func hasValidSavedQuery(query interface{}) error {
 func hasValidCountQuery(query interface{}) error {
 	queryConverted := query.(map[string]interface{})
 	if len(queryConverted) > 10 {
-		return errors.New("Top Values Validator: the query count entity has a limit of 10 queries by request.")
+		return errors.New("Count Query Validator: the query count entity has a limit of 10 queries by request.")
 	}
 	return nil
 }
 
-// hasValidCountQuery checks whether the count query passed by user is valid. It
-// validates especially if the query len is less than 10.
+// hasValidTopValuesQuery checks whether the top values query passed by user is valid. It
+// validates especially if the query len is less than 5 and field len is less than 6.
 func hasValidTopValuesQuery(query interface{}) error {
 	queryConverted := query.(map[string]interface{})
 	// check query limit
@@ -230,7 +231,7 @@ func (s *SlicingDice) getKey(keys map[string]string, endpointKeyLevel int) (stri
 }
 
 // getFullUrl checks if enviroment has the SD_API_ADDRESS variable. If don't has
-// him define the url base how 'https://api.slicingdice.com'.
+// him define the url base how 'https://api.slicingdice.com/v1'.
 func (s *SlicingDice) getFullUrl(path string) string {
 	if len(sd_base) != 0 {
 		if s.Test {
@@ -340,14 +341,14 @@ func (s *SlicingDice) DeleteSavedQuery(queryName string) (map[string]interface{}
 	return s.makeRequest(url, "DELETE", 2, nil)
 }
 
-// GetSavedQueries get all saved query by name
+// GetSavedQueries get all saved queryName
 // It returns a JSON converted in map[string]interface{}
 func (s *SlicingDice) GetSavedQueries() (map[string]interface{}, error) {
 	url := s.getFullUrl(SAVED)
 	return s.makeRequest(url, "GET", 2, nil)
 }
 
-// Index indexing a collection of data in SlicingDice.
+// Index a collection of data in SlicingDice.
 // It returns a JSON converted in map[string]interface{}
 func (s *SlicingDice) Index(query map[string]interface{}) (map[string]interface{}, error) {
 	url := s.getFullUrl(INDEX)

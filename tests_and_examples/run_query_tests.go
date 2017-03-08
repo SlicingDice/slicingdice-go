@@ -24,6 +24,7 @@ type SlicingDiceTester struct {
 	verbose          bool
 }
 
+// Run all the tests of determined query type
 func (s *SlicingDiceTester) runTests(queryType string) {
 	testData := s.loadTestData(queryType).([]interface{})
 	numTests := len(testData)
@@ -61,6 +62,7 @@ func (s *SlicingDiceTester) runTests(queryType string) {
 	}
 }
 
+// Create fields on Slicing Dice API
 func (s *SlicingDiceTester) createFields(test map[string]interface{}) error {
 	var fieldOrFields string
 	fields := test["fields"].([]interface{})
@@ -89,6 +91,10 @@ func (s *SlicingDiceTester) createFields(test map[string]interface{}) error {
 	return nil
 }
 
+/* Append a timestamp to field name
+This technique allows the same test suite to be executed over and over
+again, since each execution will use different field names.
+*/
 func (s *SlicingDiceTester) appendTimestampToFieldName(field map[string]interface{}) map[string]interface{} {
 	oldName := fmt.Sprintf("\"%v\"", field["api-name"])
 
@@ -101,15 +107,18 @@ func (s *SlicingDiceTester) appendTimestampToFieldName(field map[string]interfac
 	return field
 }
 
+// Get actual timestamp on string
 func (s *SlicingDiceTester) getTimestamp() string {
 	now := time.Now().UnixNano() / int64(time.Millisecond)
 	return fmt.Sprintf("%v", now)
 }
 
+// Erase field translation map
 func (s *SlicingDiceTester) emptyFieldTranslation() {
 	s.fieldTranslation = map[string]string{}
 }
 
+// Index data on Slicing Dice API
 func (s *SlicingDiceTester) indexData(test map[string]interface{}) error {
 	var entityOrEntities string
 	index := test["index"].(map[string]interface{})
@@ -140,6 +149,7 @@ func (s *SlicingDiceTester) indexData(test map[string]interface{}) error {
 	return nil
 }
 
+// Translate field names to match the name with timestamp
 func (s *SlicingDiceTester) translateFieldNames(jsonData map[string]interface{}) map[string]interface{} {
 	dataConverted, _ := json.Marshal(jsonData)
 	dataString := string(dataConverted)
@@ -151,6 +161,7 @@ func (s *SlicingDiceTester) translateFieldNames(jsonData map[string]interface{})
 	return s.decodeJSON(dataString).(map[string]interface{})
 }
 
+// Execute a query of a determined type on Slicing Dice API
 func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]interface{}) (map[string]interface{}, error) {
 	var result interface{}
 	var err error
@@ -181,6 +192,7 @@ func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]inter
 	return result.(map[string]interface{}), err
 }
 
+// Compare and assert result received from Slicing Dice API
 func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result map[string]interface{}, err error) {
 	expected := s.translateFieldNames(test["expected"].(map[string]interface{}))
 	if err != nil {
@@ -213,6 +225,7 @@ func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result ma
 	}
 }
 
+// Decode a JSON
 func (s *SlicingDiceTester) decodeJSON(jsonData string) interface{} {
 	var f interface{}
 	d := json.NewDecoder(strings.NewReader(jsonData))
@@ -223,6 +236,7 @@ func (s *SlicingDiceTester) decodeJSON(jsonData string) interface{} {
 	return f
 }
 
+// Load test data from examples folder
 func (s *SlicingDiceTester) loadTestData(queryType string) interface{} {
 	filename := s.path + queryType + s.extension
 	file, err := ioutil.ReadFile(filename)
@@ -240,8 +254,11 @@ func newSlicingDiceTester(apiKey string, verboseOption bool) (t *SlicingDiceTest
 	sdTester.client.Test = true
 	sdTester.verbose = verboseOption
 
-	sdTester.sleepTime = 5
+	// Sleep Time in seconds
+	sdTester.sleepTime = 10
+	// Path for examples 
 	sdTester.path = "examples/"
+	// Examples files extension
 	sdTester.extension = ".json"
 
 	sdTester.numSuccess = 0
@@ -278,7 +295,7 @@ func printResults(sdTester *SlicingDiceTester) {
 
 func main() {
 	// SlicingDice queries to be tested. Must match the JSON file name.
-	var queryTypes = [4]string{
+	var queryTypes = [6]string{
 		"count_entity",
 		"count_event",
 		"top_values",
@@ -287,8 +304,10 @@ func main() {
 		"score",
 	}
 
+	// Testing class with demo API key
+    // You can get a new demo API key here: http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
 	sdTester := newSlicingDiceTester(
-		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMW0iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMCwiY2xpZW50X2lkIjoxMH0.xRBHeDxTzYAgFyuU94SWFbjITeoxgyRCQGdIee8qrLA",
+		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vNzRtIiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6MjM1LCJjbGllbnRfaWQiOjEwfQ.f9yLh6M82NX06r3TemFLmZ2U-tadBqgKF2EuONZrOK0",
 		false,
 	)
 
