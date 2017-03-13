@@ -184,7 +184,7 @@ func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]inter
 	} else if queryType == "result" {
 		result, err = s.client.Result(queryDataTranslated)
 	} else if queryType == "score" {
-		result, err = s.client.Aggregation(queryDataTranslated)
+		result, err = s.client.Score(queryDataTranslated)
 	}
 	if result == nil {
 		return nil, err
