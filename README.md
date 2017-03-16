@@ -83,7 +83,7 @@ func main() {
 * `timeout (int)` - Amount of time, in seconds, to wait for results for each request.
 
 ### `GetProjects()`
-Get all created projects, both active and inactive ones. This method corresponds to a [GET request at /project](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-project).
+Get all created projects, both active and inactive ones. This method corresponds to a [GET request at /project](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-project). **IMPORTANT:** You can't make this request on tests end-point
 
 #### Request example
 
@@ -92,14 +92,14 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_API_KEY"
-    sd := slicingdice.New(keys, 60)
-    fmt.Println(sd.GetProjects())
+    client := slicingdice.New(keys, 60)
+    fmt.Println(client.GetProjects())
 }
 ```
 
@@ -192,7 +192,7 @@ import (
 
 func main() {
     keys := new(slicingdice.APIKey)
-    keys.MasterKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vOTZtIiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6MjU3LCJjbGllbnRfaWQiOjEwfQ.rJXWMKrf7Gy1OPCWilO-lXXHa8atYb5SfAz-UVAVrvM"
+    keys.MasterKey = "MASTER_API_KEY"
     client := slicingdice.New(keys, 60)
 
     // If you need production end-point you can remove this
@@ -228,13 +228,17 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
-    keys.MasterKey = "MASTER_OR_READ_API_KEY"
-    sd := slicingdice.New(keys, 60)
+    keys.MasterKey = "MASTER_API_KEY"
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
     indexData := map[string]interface{}{
         "user1@slicingdice.com": map[string]interface{}{
             "car-model": "Ford Ka",
@@ -272,8 +276,9 @@ func main() {
                 },
             },
         },
+        "auto-create-fields": true,
     }
-    fmt.Println(sd.Index(indexData))
+    fmt.Println(client.Index(indexData))
 }
 ```
 
@@ -298,19 +303,24 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
-    sd := slicingdice.New(keys, 60)
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+    
     entities := []string{
         "user1@slicingdice.com",
         "user2@slicingdice.com",
         "user3@slicingdice.com",
+        "otheruser@slicingdice.com",
     }
-    fmt.Println(sd.ExistsEntity(entities))
+    fmt.Println(client.ExistsEntity(entities))
 }
 ```
 
@@ -321,10 +331,11 @@ func main() {
     "status": "success",
     "exists": [
         "user1@slicingdice.com",
-        "user2@slicingdice.com"
+        "user2@slicingdice.com",
+        "user3@slicingdice.com"
     ],
     "not-exists": [
-        "user3@slicingdice.com"
+        "otheruser@slicingdice.com"
     ],
     "took": 0.103
 }
@@ -340,14 +351,18 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
-    sd := slicingdice.New(keys, 60)
-    fmt.Println(sd.CountEntityTotal())
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
+    fmt.Println(client.CountEntityTotal())
 }
 ```
 
@@ -373,13 +388,17 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
-    sd := slicingdice.New(keys, 60)
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
     query := map[string]interface{}{
         "users-in-ny-or-ca": []interface{}{
             map[string]interface{}{
@@ -394,14 +413,17 @@ func main() {
                 },
             },
         },
-        "users-in-fl": map[string]interface{}{
-            "state": map[string]string{
-                "equals": "NY",
+        "users-in-fl": []map[string]interface{}{
+            map[string]interface{}{
+                "state": map[string]string{
+                    "equals": "NY",
+                },
             },
         },
         "bypass-cache": false,
     }
-    fmt.Println(sd.CountEntity(query))
+
+    fmt.Println(client.CountEntity(query))
 }
 ```
 
@@ -428,45 +450,45 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
-    sd := slicingdice.New(keys, 60)
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
     query := map[string]interface{}{
         "users-from-ny-in-jan": []map[string]interface{}{
             map[string]interface{}{
-                "test-field": []map[string]interface{}{
-                    map[string]interface{}{
-                        "equals": "NY",
-                        "between": []string{
-                            "2016-04-01T00:00:00Z",
-                            "2016-04-03T00:00:00Z",
-                        },
-                        "minfreq": 2,
+                "test-field": map[string]interface{}{
+                    "equals": "NY",
+                    "between": []string{
+                        "2016-04-01T00:00:00Z",
+                        "2016-04-03T00:00:00Z",
                     },
+                    "minfreq": 2,
                 },
             },
         },
         "users-from-ny-in-feb": []map[string]interface{}{
             map[string]interface{}{
-                "test-field": []map[string]interface{}{
-                    map[string]interface{}{
-                        "equals": "NY",
-                        "between": []string{
-                            "2016-02-01T00:00:00Z",
-                            "2016-02-28T00:00:00Z",
-                        },
-                        "minfreq": 2,
+                "test-field": map[string]interface{}{
+                    "equals": "NY",
+                    "between": []string{
+                        "2016-02-01T00:00:00Z",
+                        "2016-02-28T00:00:00Z",
                     },
+                    "minfreq": 2,
                 },
             },
         },
         "bypass-cache": true,
     }
-    fmt.Println(sd.CountEvent(query))
+    fmt.Println(client.CountEvent(query))
 }
 ```
 
@@ -493,29 +515,27 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
-    sd := slicingdice.New(keys, 60)
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
     query := map[string]interface{}{
-        "user-gender": map[string]interface{}{
-            "gender": 2,
+        "car-year": map[string]interface{}{
+            "year": 2,
         },
-        "operating-systems": map[string]interface{}{
-            "os": 3,
-        },
-        "linux-operating-systems": map[string]interface{}{
-            "os": 3,
-            "contains": []string{
-                "linux",
-                "unix",
-            },
+        "car models": map[string]interface{}{
+            "car-model": 3,
         },
     }
-    fmt.Println(sd.TopValues(query))
+
+    fmt.Println(client.TopValues(query))
 }
 ```
 
@@ -523,49 +543,38 @@ func main() {
 
 ```json
 {
-    "status": "success",
-    "result": {
-        "user-gender": {
-            "gender": [
-                {
-                    "quantity": 6.0,
-                    "value": "male"
-                }, {
-                    "quantity": 4.0,
-                    "value": "female"
-                }
-            ]
-        },
-        "operating-systems": {
-            "os": [
-                {
-                    "quantity": 55.0,
-                    "value": "windows"
-                }, {
-                    "quantity": 25.0,
-                    "value": "macos"
-                }, {
-                    "quantity": 12.0,
-                    "value": "linux"
-                }
-            ]
-        },
-        "linux-operating-systems": {
-            "os": [
-                {
-                    "quantity": 12.0,
-                    "value": "linux"
-                }, {
-                    "quantity": 3.0,
-                    "value": "debian-linux"
-                }, {
-                    "quantity": 2.0,
-                    "value": "unix"
-                }
-            ]
-        }
-    },
-    "took": 0.103
+   "result":{
+      "car models":{
+         "car-model":[
+            {
+               "quantity":2,
+               "value":"ford ka"
+            },
+            {
+               "quantity":1,
+               "value":"honda fit"
+            },
+            {
+               "quantity":1,
+               "value":"toyota corolla"
+            }
+         ]
+      },
+      "car-year":{
+         "year":[
+            {
+               "quantity":2,
+               "value":"2016"
+            },
+            {
+               "quantity":1,
+               "value":"2005"
+            }
+         ]
+      }
+   },
+   "status":"success",
+   "took":0.026
 }
 ```
 
@@ -579,32 +588,33 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
-    sd := slicingdice.New(keys, 60)
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
     query := map[string]interface{}{
         "query": []map[string]interface{}{
             map[string]interface{}{
-                "gender": 2,
+                "year": 2,
             },
             map[string]interface{}{
-                "os": 2,
+                "car-model": 2,
                 "equals": []string{
-                    "linux",
-                    "macos",
-                    "windows",
+                    "honda fit",
+                    "toyota corolla",
                 },
-            },
-            map[string]interface{}{
-                "browser": 2,
             },
         },
     }
-    fmt.Println(sd.Aggregation(query))
+
+    fmt.Println(client.Aggregation(query))
 }
 ```
 
@@ -612,64 +622,22 @@ func main() {
 
 ```json
 {
-    "status": "success",
-    "result": {
-        "gender": [
+   "year":[
+      {
+         "car-model":[
             {
-                "quantity": 6,
-                "value": "male",
-                "os": [
-                    {
-                        "quantity": 5,
-                        "value": "windows",
-                        "browser": [
-                            {
-                                "quantity": 3,
-                                "value": "safari"
-                            }, {
-                                "quantity": 2,
-                                "value": "internet explorer"
-                            }
-                        ]
-                    }, {
-                        "quantity": 1,
-                        "value": "linux",
-                        "browser": [
-                            {
-                                "quantity": 1,
-                                "value": "chrome"
-                            }
-                        ]
-                    }
-                ]
-            }, {
-                "quantity": 4,
-                "value": "female",
-                "os": [
-                    {
-                        "quantity": 3,
-                        "value": "macos",
-                        "browser": [
-                            {
-                                "quantity": 3,
-                                "value": "chrome"
-                            }
-                        ]
-                    }, {
-                        "quantity": 1,
-                        "value": "linux",
-                        "browser": [
-                            {
-                                "quantity": 1,
-                                "value": "chrome"
-                            }
-                        ]
-                    }
-                ]
+               "quantity":1,
+               "value":"honda fit"
             }
-        ]
-    },
-    "took": 0.103
+         ],
+         "quantity":2,
+         "value":"2016"
+      },
+      {
+         "quantity":1,
+         "value":"2005"
+      }
+   ]
 }
 ```
 
@@ -683,54 +651,47 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_API_KEY"
-    sd := slicingdice.New(keys, 60)
-    fmt.Println(sd.GetSavedQueries())
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
+    fmt.Println(client.GetSavedQueries())
 }
 ```
 
 #### Output example
 
 ```json
-{
-    "status": "success",
-    "saved-queries": [
-        {
-            "name": "users-in-ny-or-from-ca",
-            "type": "count/entity",
-            "query": [
-                {
-                    "state": {
-                        "equals": "NY"
-                    }
-                },
-                "or",
-                {
-                    "state-origin": {
-                        "equals": "CA"
-                    }
-                }
-            ],
-            "cache-period": 100
-        }, {
-            "name": "users-from-ca",
-            "type": "count/entity",
-            "query": [
-                {
-                    "state": {
-                        "equals": "NY"
-                    }
-                }
-            ],
-            "cache-period": 60
-        }
-    ],
-    "took": 0.103
+{  
+   "saved-queries":[  
+      {  
+         "cache-period":100,
+         "name":"my-saved-query",
+         "query":[  
+            {  
+               "car-model":{  
+                  "equals":"honda fit"
+               }
+            },
+            "or",
+            {  
+               "car-model":{  
+                  "equals":"toyota corolla"
+               }
+            }
+         ],
+         "type":"count/entity"
+      }
+   ],
+   "status":"success",
+   "took":0.011
 }
 ```
 
@@ -744,57 +705,60 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_API_KEY"
-    sd := slicingdice.New(keys, 60)
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
     query := map[string]interface{}{
         "name": "my-saved-query",
         "type": "count/entity",
         "query": []interface{}{
             map[string]interface{}{
-                "state": map[string]string{
-                    "equals": "NY",
+                "car-model": map[string]string{
+                    "equals": "honda fit",
                 },
             },
             "or",
             map[string]interface{}{
-                "state": map[string]string{
-                    "equals": "CA",
+                "car-model": map[string]string{
+                    "equals": "toyota corolla",
                 },
             },
         },
         "cache-period": 100,
     }
-    fmt.Println(sd.CreateSavedQuery(query))
+
+    fmt.Println(client.CreateSavedQuery(query))
 }
 ```
 
 #### Output example
 
 ```json
-{
-    "status": "success",
-    "name": "my-saved-query",
-    "type": "count/entity",
-    "query": [
-        {
-            "state": {
-                "equals": "NY"
-            }
-        },
-        "or",
-        {
-            "state-origin": {
-                "equals": "CA"
-            }
-        }
-    ],
-    "cache-period": 100,
-    "took": 0.103
+{  
+   "cache-period":100,
+   "name":"my-saved-query",
+   "query":[  
+      {  
+         "car-model":{  
+            "equals":"honda fit"
+         }
+      },
+      "or",
+      {  
+         "car-model":{  
+            "equals":"toyota corolla"
+         }
+      }
+   ],
+   "type":"count/entity"
 }
 ```
 
@@ -808,7 +772,7 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
