@@ -20,7 +20,7 @@ Whether you want to test the client installation or simply check more examples o
 In order to install the Go client, you only need to execute the [`go get`](https://golang.org/cmd/go/#hdr-Download_and_install_packages_and_dependencies) command.
 
 ```bash
-go get github.com/SlicingDice/slicingdice-go
+go get github.com/SlicingDice/slicingdice-go/slicingdice
 ```
 
 ## Usage
@@ -30,14 +30,16 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice-go"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     // Configure client
     keys := new(slicingdice.APIKey)
-    keys.MasterKey = "mykey"
+    keys.MasterKey = "YOUR_API_KEY"
     client := slicingdice.New(keys, 60)
+    // If you need production end-point you can remove this
+    client.Test = true
 
     // Indexing data
     index_data := map[string]interface{}{
@@ -50,14 +52,18 @@ func main() {
 
     // Querying data
     query_data := map[string]interface{}{
-        "users-between-20-and-40": map[string]interface{}{
-            "age": map[string][]int{
-                "range": []int{20, 40},
+        "users-between-20-and-40": []map[string]interface{} {
+            map[string]interface{}{
+                "age": map[string][]int{
+                    "range": []int{20, 40},
+                },
             },
         },
     }
-    result, _ := client.CountEntity(query_data)
+
+    result, err := client.CountEntity(query_data)
     fmt.Println(result["status"])
+    fmt.Println(err)
 }
 ```
 
@@ -130,14 +136,16 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_API_KEY"
-    sd := slicingdice.New(keys, 60)
-    fmt.Println(sd.GetFields())
+    client := slicingdice.New(keys, 60)
+    // If you need production end-point you can remove this
+    client.Test = true
+    fmt.Println(client.GetFields())
 }
 ```
 
@@ -179,20 +187,25 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
-    keys.MasterKey = "MASTER_API_KEY"
-    sd := slicingdice.New(keys, 60)
+    keys.MasterKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vOTZtIiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6MjU3LCJjbGllbnRfaWQiOjEwfQ.rJXWMKrf7Gy1OPCWilO-lXXHa8atYb5SfAz-UVAVrvM"
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
     fieldData := map[string]interface{}{
         "name":        "Year",
         "type":        "integer",
         "description": "Year of manufacturing",
-        "storage":     "lastest-value",
+        "storage":     "latest-value",
     }
-    fmt.Println(sd.CreateField(fieldData))
+
+    fmt.Println(client.CreateField(fieldData))
 }
 ```
 
