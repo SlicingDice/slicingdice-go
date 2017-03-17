@@ -61,9 +61,8 @@ func main() {
         },
     }
 
-    result, err := client.CountEntity(query_data)
+    result, _ := client.CountEntity(query_data)
     fmt.Println(result["status"])
-    fmt.Println(err)
 }
 ```
 
