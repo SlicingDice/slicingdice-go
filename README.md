@@ -400,23 +400,23 @@ func main() {
     client.Test = true
 
     query := map[string]interface{}{
-        "users-in-ny-or-ca": []interface{}{
+        "corolla-or-fit": []interface{}{
             map[string]interface{}{
-                "state": map[string]string{
-                    "equals": "NY",
+                "car-model": map[string]string{
+                    "equals": "toyota corolla",
                 },
             },
             "or",
             map[string]interface{}{
-                "state": map[string]string{
-                    "equals": "CA",
+                "car-model": map[string]string{
+                    "equals": "honda fit",
                 },
             },
         },
-        "users-in-fl": []map[string]interface{}{
+        "ford-ka": []map[string]interface{}{
             map[string]interface{}{
-                "state": map[string]string{
-                    "equals": "NY",
+                "car-model": map[string]string{
+                    "equals": "ford ka",
                 },
             },
         },
@@ -431,12 +431,12 @@ func main() {
 
 ```json
 {
-    "status": "success",
-    "result": {
-        "users-from-ny-or-ca": 175,
-        "users-from-ny": 296
-    },
-    "took": 0.103
+   "result":{
+      "corolla-or-fit":2,
+      "ford-ka":2
+   },
+   "status":"success",
+   "took":0.053
 }
 ```
 
@@ -462,27 +462,25 @@ func main() {
     client.Test = true
 
     query := map[string]interface{}{
-        "users-from-ny-in-jan": []map[string]interface{}{
+        "test-drives-in-ny": []map[string]interface{}{
             map[string]interface{}{
-                "test-field": map[string]interface{}{
+                "test-drives": map[string]interface{}{
                     "equals": "NY",
                     "between": []string{
-                        "2016-04-01T00:00:00Z",
-                        "2016-04-03T00:00:00Z",
+                        "2016-08-16T00:00:00Z",
+                        "2016-08-18T00:00:00Z",
                     },
-                    "minfreq": 2,
                 },
             },
         },
-        "users-from-ny-in-feb": []map[string]interface{}{
+        "test-drives-in-ca": []map[string]interface{}{
             map[string]interface{}{
-                "test-field": map[string]interface{}{
-                    "equals": "NY",
+                "test-drives": map[string]interface{}{
+                    "equals": "CA",
                     "between": []string{
-                        "2016-02-01T00:00:00Z",
-                        "2016-02-28T00:00:00Z",
+                        "2016-04-04T00:00:00Z",
+                        "2016-04-06T00:00:00Z",
                     },
-                    "minfreq": 2,
                 },
             },
         },
@@ -495,13 +493,13 @@ func main() {
 #### Output example
 
 ```json
-{
-    "status": "success",
-    "result": {
-        "users-from-ny-in-jan": 175,
-        "users-from-ny-in-feb": 296
-    },
-    "took": 0.103
+{  
+   "result":{  
+      "test-drives-in-ca":1,
+      "test-drives-in-ny":3
+   },
+   "status":"success",
+   "took":0.029
 }
 ```
 
