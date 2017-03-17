@@ -775,28 +775,34 @@ import (
     "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
+
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_API_KEY"
-    sd := slicingdice.New(keys, 60)
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
     query := map[string]interface{}{
         "type": "count/entity",
         "query": []interface{}{
             map[string]interface{}{
-                "state": map[string]string{
-                    "equals": "NY",
+                "car-model": map[string]string{
+                    "equals": "honda fit",
                 },
             },
             "or",
             map[string]interface{}{
-                "state": map[string]string{
-                    "equals": "CA",
+                "car-model": map[string]string{
+                    "equals": "toyota corolla",
                 },
             },
         },
         "cache-period": 100,
     }
-    fmt.Println(sd.UpdateSavedQuery("my-saved-query", query))
+
+    fmt.Println(client.UpdateSavedQuery("my-saved-query", query))
 }
 ```
 
@@ -804,24 +810,23 @@ func main() {
 
 ```json
 {
-    "status": "success",
-    "name": "my-saved-query",
-    "type": "count/entity",
-    "query": [
-        {
-            "state": {
-                "equals": "NY"
-            }
-        },
-        "or",
-        {
-            "state-origin": {
-                "equals": "CA"
-            }
-        }
-    ],
-    "cache-period": 100,
-    "took": 0.103
+   "cache-period":100,
+   "query":[
+      {
+         "car-model":{
+            "equals":"honda fit"
+         }
+      },
+      "or",
+      {
+         "car-model":{
+            "equals":"toyota corolla"
+         }
+      }
+   ],
+   "status":"success",
+   "took":0.011,
+   "type":"count/entity"
 }
 ```
 
@@ -835,14 +840,18 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
-    sd := slicingdice.New(keys, 60)
-    fmt.Println(sd.GetSavedQuery("my-saved-query"))
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
+    fmt.Println(client.GetSavedQuery("my-saved-query"))
 }
 ```
 
@@ -850,25 +859,25 @@ func main() {
 
 ```json
 {
-    "status": "success",
-    "type": "count/entity",
-    "query": [
-        {
-            "state": {
-                "equals": "NY"
-            }
-        },
-        "or",
-        {
-            "state-origin": {
-                "equals": "CA"
-            }
-        }
-    ],
-    "result": {
-        "my-saved-query": 175
-    },
-    "took": 0.103
+   "query":[
+      {
+         "car-model":{
+            "equals":"honda fit"
+         }
+      },
+      "or",
+      {
+         "car-model":{
+            "equals":"toyota corolla"
+         }
+      }
+   ],
+   "result":{
+      "query":2
+   },
+   "status":"success",
+   "took":0.021,
+   "type":"count/entity"
 }
 ```
 
@@ -882,14 +891,18 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_API_KEY"
-    sd := slicingdice.New(keys, 60)
-    fmt.Println(sd.DeleteSavedQuery("my-saved-query"))
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
+    fmt.Println(client.DeleteSavedQuery("my-saved-query"))
 }
 ```
 
@@ -897,23 +910,24 @@ func main() {
 
 ```json
 {
-    "status": "success",
-    "deleted-query": "my-saved-query",
-    "type": "count/entity",
-    "query": [
-        {
-            "state": {
-                "equals": "NY"
-            }
-        },
-        "or",
-        {
-            "state-origin": {
-                "equals": "CA"
-            }
-        }
-    ],
-    "took": 0.103
+   "cache-period":100,
+   "deleted-query":"my-saved-query",
+   "query":[
+      {
+         "car-model":{
+            "equals":"honda fit"
+         }
+      },
+      "or",
+      {
+         "car-model":{
+            "equals":"toyota corolla"
+         }
+      }
+   ],
+   "status":"success",
+   "took":0.011,
+   "type":"count/entity"
 }
 ```
 
@@ -927,31 +941,36 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
-    sd := slicingdice.New(keys, 60)
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
     query := map[string]interface{}{
         "query": []interface{}{
             map[string]interface{}{
-                "state": map[string]string{
-                    "equals": "NY",
+                "car-model": map[string]string{
+                    "equals": "ford ka",
                 },
             },
             "or",
             map[string]interface{}{
-                "state": map[string]string{
-                    "equals": "CA",
+                "car-model": map[string]string{
+                    "equals": "honda fit",
                 },
             },
         },
-        "fields":     []string{"name", "year"},
+        "fields":     []string{"car-model", "year"},
         "limit":      2,
     }
-    fmt.Println(sd.Result(query))
+
+    fmt.Println(client.Result(query))
 }
 ```
 
@@ -959,18 +978,20 @@ func main() {
 
 ```json
 {
-    "status": "success",
-    "data": {
-        "user1@slicingdice.com": {
-            "name": "John",
-            "year": 2016
-        },
-        "user2@slicingdice.com": {
-            "name": "Mary",
-            "year": 2005
-        }
-    },
-    "took": 0.103
+   "data":{
+      "user2@slicingdice.com":{
+         "car-model":"honda fit",
+         "year":"2016"
+      },
+      "user4@slicingdice.com":{
+         "car-model":"ford ka",
+         "year":"2005"
+      }
+   },
+   "next-page":null,
+   "page":1,
+   "status":"success",
+   "took":0.055
 }
 ```
 
@@ -984,31 +1005,36 @@ package main
 
 import (
     "fmt"
-    "github.com/SlicingDice/slicingdice"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
 )
 
 func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
-    sd := slicingdice.New(keys, 60)
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+
     query := map[string]interface{}{
         "query": []interface{}{
             map[string]interface{}{
-                "state": map[string]string{
-                    "equals": "NY",
+                "car-model": map[string]string{
+                    "equals": "toyota corolla",
                 },
             },
             "or",
             map[string]interface{}{
-                "state": map[string]string{
-                    "equals": "CA",
+                "car-model": map[string]string{
+                    "equals": "honda fit",
                 },
             },
         },
-        "fields":     []string{"name", "year"},
+        "fields":     []string{"car-model", "year"},
         "limit":      2,
     }
-    fmt.Println(sd.Score(query))
+
+    fmt.Println(client.Score(query))
 }
 ```
 
@@ -1016,20 +1042,22 @@ func main() {
 
 ```json
 {
-    "status": "success",
-    "data": {
-        "user1@slicingdice.com": {
-            "name": "John",
-            "year": 2016,
-            "score": 2
-        },
-        "user2@slicingdice.com": {
-            "name": "Mary",
-            "year": 2005,
-            "score": 1
-        }
-    },
-    "took": 0.103
+   "data":{
+      "user2@slicingdice.com":{
+         "car-model":"honda fit",
+         "score":1,
+         "year":"2016"
+      },
+      "user3@slicingdice.com":{
+         "car-model":"toyota corolla",
+         "score":1,
+         "year":"2010"
+      }
+   },
+   "next-page":null,
+   "page":1,
+   "status":"success",
+   "took":0.036
 }
 ```
 

@@ -105,12 +105,12 @@ func hasValidTopValuesQuery(query interface{}) error {
 func hasValidDataExtractionQuery(query interface{}) error {
 	queryConverted := query.(map[string]interface{})
 	if val, ok := queryConverted["limit"]; ok {
-		if val.(float64) > 100 {
+		if val.(int) > 100 {
 			return errors.New("Data Extraction Validator: the field 'limit' has a value max of 100.")
 		}
 	}
 	if val, ok := queryConverted["fields"]; ok {
-		if len(val.([]interface{})) > 10 {
+		if len(val.([]string)) > 10 {
 			return errors.New("Data Extraction Validator: The key 'fields' in data extraction result must have up to 10 fields.")
 		}
 	}
