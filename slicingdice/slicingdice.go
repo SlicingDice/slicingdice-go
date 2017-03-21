@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"reflect"
 )
 
 var sd_base = os.Getenv("SD_API_ADDRESS")
@@ -119,8 +120,21 @@ func hasValidDataExtractionQuery(query interface{}) error {
 
 // hasValidField checks whether the new field is valid. Checks type, name,
 // description; enumerate, decimal-place and string types.
-func hasValidField(query map[string]interface{}) error {
-	//queryConverted := query.(map[string]interface{})
+func hasValidField(query interface{}) error {
+	if reflect.ValueOf(query).Kind() == reflect.Slice {
+		fieldData := query.([]interface{})
+		for _, field := range fieldData {
+			field := field.(map[string]interface{})
+	        validateField(field)
+	    }
+	} else {
+		query := query.(map[string]interface{})
+		validateField(query)
+	}
+	return nil
+}
+
+func validateField(query map[string]interface{}) error {
 	validTypeFields := []string{
 		"unique-id", "boolean", "string", "integer", "decimal",
 		"enumerated", "date", "integer-time-series",
@@ -248,7 +262,7 @@ func (s *SlicingDice) getFullUrl(path string) string {
 
 // makeRequest checks request method, convert the query passed for use to JSON
 // and executes the request.
-func (s *SlicingDice) makeRequest(url string, method string, endpointKeyLevel int, query map[string]interface{}) (map[string]interface{}, error) {
+func (s *SlicingDice) makeRequest(url string, method string, endpointKeyLevel int, query interface{}) (map[string]interface{}, error) {
 	queryData := new(bytes.Buffer)
 	json.NewEncoder(queryData).Encode(query)
 	methodsAllowed := []string{"GET", "POST", "PUT", "DELETE"}
@@ -357,7 +371,7 @@ func (s *SlicingDice) Index(query map[string]interface{}) (map[string]interface{
 
 // CreateField create a field in SlicingDice
 // It returns a JSON converted in map[string]interface{}
-func (s *SlicingDice) CreateField(query map[string]interface{}) (map[string]interface{}, error) {
+func (s *SlicingDice) CreateField(query interface{}) (map[string]interface{}, error) {
 	url := s.getFullUrl(FIELD)
 	validate := hasValidField(query)
 	if validate != nil {
