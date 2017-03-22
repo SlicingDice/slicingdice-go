@@ -111,7 +111,8 @@ func hasValidDataExtractionQuery(query interface{}) error {
 		}
 	}
 	if val, ok := queryConverted["fields"]; ok {
-		if len(val.([]string)) > 10 {
+		fields := reflect.ValueOf(val)
+		if fields.Len() > 10 {
 			return errors.New("Data Extraction Validator: The key 'fields' in data extraction result must have up to 10 fields.")
 		}
 	}
