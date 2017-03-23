@@ -25,6 +25,13 @@ go get github.com/SlicingDice/slicingdice-go/slicingdice
 
 ## Usage
 
+The following code snippet is an example of how to add and query data
+using the SlicingDice GO client. We entry data informing
+'user1@slicingdice.com' has age 22 and then query the database for
+the number of entities with age between 20 and 40 years old.
+If this is the first record ever entered into the system,
+ the answer should be 1.
+
 ```go
 package main
 
@@ -312,7 +319,7 @@ func main() {
 
     // If you need production end-point you can remove this
     client.Test = true
-    
+
     entities := []string{
         "user1@slicingdice.com",
         "user2@slicingdice.com",
@@ -378,7 +385,7 @@ func main() {
 ```
 
 ### `CountEntity(query interface{})`
-Count the number of entities attending the given query. This method corresponds to a [POST request at /query/count/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-entity).
+Count the number of entities matching the given query. This method corresponds to a [POST request at /query/count/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-entity).
 
 #### Request example
 
@@ -440,7 +447,7 @@ func main() {
 ```
 
 ### `CountEvent(query interface{})`
-Count the number of occurrences for time-series events attending the given query. This method corresponds to a [POST request at /query/count/event](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-event).
+Count the number of occurrences for time-series events matching the given query. This method corresponds to a [POST request at /query/count/event](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-event).
 
 #### Request example
 
@@ -503,7 +510,7 @@ func main() {
 ```
 
 ### `TopValues(query interface{})`
-Return the top values for entities attending the given query. This method corresponds to a [POST request at /query/top_values](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-top-values).
+Return the top values for entities matching the given query. This method corresponds to a [POST request at /query/top_values](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-top-values).
 
 #### Request example
 
@@ -929,7 +936,7 @@ func main() {
 ```
 
 ### `Result(query interface{})`
-Retrieve indexed values for entities attending the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
+Retrieve indexed values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
 
 #### Request example
 
@@ -993,7 +1000,7 @@ func main() {
 ```
 
 ### `Score(query interface{})`
-Retrieve indexed values as well as their relevance for entities attending the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
+Retrieve indexed values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
 
 #### Request example
 
