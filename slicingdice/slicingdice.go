@@ -11,6 +11,7 @@ import (
 	"os"
 	"time"
 	"reflect"
+	"fmt"
 )
 
 var sd_base = os.Getenv("SD_API_ADDRESS")
@@ -264,6 +265,7 @@ func (s *SlicingDice) getFullUrl(path string) string {
 // makeRequest checks request method, convert the query passed for use to JSON
 // and executes the request.
 func (s *SlicingDice) makeRequest(url string, method string, endpointKeyLevel int, query interface{}) (map[string]interface{}, error) {
+	fmt.Println(query)
 	queryData := new(bytes.Buffer)
 	json.NewEncoder(queryData).Encode(query)
 	methodsAllowed := []string{"GET", "POST", "PUT", "DELETE"}
@@ -317,15 +319,12 @@ func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string
 // in case of JSON parsing error
 func (s *SlicingDice) DecodeJSON(jsonData string) interface{} {
 	var f interface{}
-	var m map[string]interface{}
-	b := []byte(jsonData)
-	json.Unmarshal(b, &f)
-
-	if f != nil {
-		return f
+	d := json.NewDecoder(strings.NewReader(jsonData))
+	d.UseNumber()
+	if err := d.Decode(&f); err != nil {
+		log.Fatal(err)
 	}
-
-	return m
+	return f
 }
 
 // Project get all projects in your SlicingDice account
