@@ -10,6 +10,7 @@ import (
 	"os/signal"
 	"strings"
 	"time"
+	"reflect"
 )
 
 type SlicingDiceTester struct {
@@ -210,7 +211,7 @@ func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result ma
 
 			resultData, _ := json.Marshal(result[key])
 			expectedData, _ := json.Marshal(expected[key])
-			if string(expectedData) != string(resultData) {
+			if !reflect.DeepEqual(resultData, expectedData) {
 				s.numFails += 1
 				s.failedTests = append(s.failedTests, test["name"].(string))
 				fmt.Printf("  Expected: \"%v\": %v\n", key, string(expectedData))
