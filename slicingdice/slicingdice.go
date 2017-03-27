@@ -11,7 +11,6 @@ import (
 	"os"
 	"time"
 	"reflect"
-	"fmt"
 	"strings"
 	"log"
 )
@@ -267,7 +266,6 @@ func (s *SlicingDice) getFullUrl(path string) string {
 // makeRequest checks request method, convert the query passed for use to JSON
 // and executes the request.
 func (s *SlicingDice) makeRequest(url string, method string, endpointKeyLevel int, query interface{}) (map[string]interface{}, error) {
-	fmt.Println(query)
 	queryData := new(bytes.Buffer)
 	json.NewEncoder(queryData).Encode(query)
 	methodsAllowed := []string{"GET", "POST", "PUT", "DELETE"}
