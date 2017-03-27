@@ -209,11 +209,23 @@ func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result ma
 				continue
 			}
 
-			resultData, _ := json.Marshal(result[key])
-			expectedData, _ := json.Marshal(expected[key])
-			if !reflect.DeepEqual(resultData, expectedData) {
+			if !reflect.DeepEqual(result[key], expected[key]) {
+				resultData, _ := json.Marshal(result[key])
+				expectedData, _ := json.Marshal(expected[key])
+
+				if strings.Contains(string(resultData), ".0}") {
+					resultNew := strings.Replace(string(resultData), ".0}", "}", 1)
+					
+					if reflect.DeepEqual(resultNew, string(expectedData)) {
+						s.numSuccess += 1
+						fmt.Println("  Status: Passed\n")
+						continue
+					}
+				}
+
 				s.numFails += 1
 				s.failedTests = append(s.failedTests, test["name"].(string))
+
 				fmt.Printf("  Expected: \"%v\": %v\n", key, string(expectedData))
 				fmt.Printf("  Result: \"result\": %v\n", string(resultData))
 				fmt.Println("  Status: Failed\n")

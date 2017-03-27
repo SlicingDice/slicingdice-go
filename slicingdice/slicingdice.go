@@ -11,6 +11,8 @@ import (
 	"os"
 	"time"
 	"reflect"
+	"strings"
+	"log"
 )
 
 var sd_base = os.Getenv("SD_API_ADDRESS")
@@ -317,15 +319,19 @@ func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string
 // in case of JSON parsing error
 func (s *SlicingDice) decodeJSON(jsonData string) map[string]interface{} {
 	var f interface{}
-	var m map[string]interface{}
-	b := []byte(jsonData)
-	json.Unmarshal(b, &f)
+	var jsonMap map[string]interface{}
+	d := json.NewDecoder(strings.NewReader(jsonData))
+	d.UseNumber()
 
-	if f != nil {
-		m = f.(map[string]interface{})
+	if err := d.Decode(&f); err != nil {
+		log.Fatal(err)
 	}
 
-	return m
+	if f != nil {
+		jsonMap = f.(map[string]interface{})
+	}
+
+	return jsonMap
 }
 
 // Project get all projects in your SlicingDice account
