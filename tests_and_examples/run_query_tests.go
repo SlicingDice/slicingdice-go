@@ -159,7 +159,7 @@ func (s *SlicingDiceTester) translateFieldNames(jsonData map[string]interface{})
 		dataString = strings.Replace(dataString, oldName, newName, -1)
 	}
 
-	return s.decodeJSON(dataString).(map[string]interface{})
+	return s.client.DecodeJSON(dataString).(map[string]interface{})
 }
 
 // Execute a query of a determined type on Slicing Dice API
@@ -213,16 +213,6 @@ func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result ma
 				resultData, _ := json.Marshal(result[key])
 				expectedData, _ := json.Marshal(expected[key])
 
-				if strings.Contains(string(resultData), ".0}") {
-					resultNew := strings.Replace(string(resultData), ".0}", "}", 1)
-					
-					if reflect.DeepEqual(resultNew, string(expectedData)) {
-						s.numSuccess += 1
-						fmt.Println("  Status: Passed\n")
-						continue
-					}
-				}
-
 				s.numFails += 1
 				s.failedTests = append(s.failedTests, test["name"].(string))
 
@@ -238,17 +228,6 @@ func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result ma
 	}
 }
 
-// Decode a JSON
-func (s *SlicingDiceTester) decodeJSON(jsonData string) interface{} {
-	var f interface{}
-	d := json.NewDecoder(strings.NewReader(jsonData))
-	d.UseNumber()
-	if err := d.Decode(&f); err != nil {
-		log.Fatal(err)
-	}
-	return f
-}
-
 // Load test data from examples folder
 func (s *SlicingDiceTester) loadTestData(queryType string) interface{} {
 	filename := s.path + queryType + s.extension
@@ -256,7 +235,7 @@ func (s *SlicingDiceTester) loadTestData(queryType string) interface{} {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return s.decodeJSON(string(file))
+	return s.client.DecodeJSON(string(file))
 }
 
 func newSlicingDiceTester(apiKey string, verboseOption bool) (t *SlicingDiceTester) {
