@@ -283,8 +283,19 @@ func (s *SlicingDiceTester) loadTestData(queryType string) interface{} {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return s.client.DecodeJSON(string(file))
+	return s.decodeTestJSON(string(file))
 }
+
+func (s *SlicingDiceTester) decodeTestJSON(jsonData string) interface{} {
+	var f interface{}
+	d := json.NewDecoder(strings.NewReader(jsonData))
+	d.UseNumber()
+	if err := d.Decode(&f); err != nil {
+		log.Fatal(err)
+	}
+	return f
+}
+
 
 func newSlicingDiceTester(apiKey string, verboseOption bool) (t *SlicingDiceTester) {
 	keys := new(slicingdice.APIKey)
