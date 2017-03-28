@@ -133,7 +133,7 @@ func (s *SlicingDiceTester) indexData(test map[string]interface{}) error {
 
 	fmt.Printf("  Indexing %v %v\n", len(index), entityOrEntities)
 
-	indexDataTranslated := s.translateFieldNames(index)
+	indexDataTranslated := s.translateFieldNames(index, true)
 
 	if s.verbose {
 		fmt.Printf("    - %v\n", indexDataTranslated)
@@ -151,7 +151,7 @@ func (s *SlicingDiceTester) indexData(test map[string]interface{}) error {
 }
 
 // Translate field names to match the name with timestamp
-func (s *SlicingDiceTester) translateFieldNames(jsonData map[string]interface{}) map[string]interface{} {
+func (s *SlicingDiceTester) translateFieldNames(jsonData map[string]interface{}, isRequest bool) map[string]interface{} {
 	dataConverted, _ := json.Marshal(jsonData)
 	dataString := string(dataConverted)
 
@@ -159,7 +159,11 @@ func (s *SlicingDiceTester) translateFieldNames(jsonData map[string]interface{})
 		dataString = strings.Replace(dataString, oldName, newName, -1)
 	}
 
-	return s.decodeJSON(dataString).(map[string]interface{})
+	if isRequest {
+		return s.decodeWithNumberJSON(dataString).(map[string]interface{})
+	} else {
+		return s.client.DecodeJSON(dataString).(map[string]interface{})
+	}
 }
 
 // Execute a query of a determined type on Slicing Dice API
@@ -167,7 +171,7 @@ func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]inter
 	var result interface{}
 	var err error
 	query := test["query"].(map[string]interface{})
-	queryDataTranslated := s.translateFieldNames(query)
+	queryDataTranslated := s.translateFieldNames(query, true)
 
 	fmt.Println("  Querying")
 	if s.verbose {
@@ -195,7 +199,7 @@ func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]inter
 
 // Compare and assert result received from Slicing Dice API
 func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result map[string]interface{}, err error) {
-	expected := s.translateFieldNames(test["expected"].(map[string]interface{}))
+	expected := s.translateFieldNames(test["expected"].(map[string]interface{}), false)
 	if err != nil {
 		s.numFails += 1
 		s.failedTests = append(s.failedTests, test["name"].(string))
@@ -209,11 +213,13 @@ func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result ma
 				continue
 			}
 
-			resultData, _ := json.Marshal(result[key])
-			expectedData, _ := json.Marshal(expected[key])
-			if !reflect.DeepEqual(resultData, expectedData) {
+			if !s.compareJSONValue(result[key], expected[key]) {
+				resultData, _ := json.Marshal(result[key])
+				expectedData, _ := json.Marshal(expected[key])
+
 				s.numFails += 1
 				s.failedTests = append(s.failedTests, test["name"].(string))
+
 				fmt.Printf("  Expected: \"%v\": %v\n", key, string(expectedData))
 				fmt.Printf("  Result: \"result\": %v\n", string(resultData))
 				fmt.Println("  Status: Failed\n")
@@ -226,15 +232,52 @@ func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result ma
 	}
 }
 
-// Decode a JSON
-func (s *SlicingDiceTester) decodeJSON(jsonData string) interface{} {
-	var f interface{}
-	d := json.NewDecoder(strings.NewReader(jsonData))
-	d.UseNumber()
-	if err := d.Decode(&f); err != nil {
-		log.Fatal(err)
+func (s *SlicingDiceTester) compareJSON(expected map[string]interface{}, got map[string]interface{}) bool {
+	if len(expected) != len(got) {
+		return false
 	}
-	return f
+
+	for key, value := range expected {
+		valueExpected := value
+		valueGot := got[key]
+
+		if !s.compareJSONValue(valueExpected, valueGot) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (s *SlicingDiceTester) compareJSONArray(expected []interface{}, got []interface{}) bool {
+	if len(expected) != len(got) {
+		return false
+	}
+
+	for i, value := range expected {
+		valueExpected := value
+		valueGot := got[i]
+
+		if !s.compareJSONValue(valueExpected, valueGot) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (s *SlicingDiceTester) compareJSONValue(expected interface{}, got interface{}) bool {
+	if reflect.ValueOf(expected).Kind() == reflect.Map {
+		expectedMap := expected.(map[string]interface{})
+		gotMap := got.(map[string]interface{})
+		return s.compareJSON(expectedMap, gotMap)
+	} else if reflect.ValueOf(expected).Kind() == reflect.Slice {
+		expectedArray := expected.([]interface{})
+		gotArray := got.([]interface{})
+		return s.compareJSONArray(expectedArray, gotArray)
+	} else {
+		return reflect.DeepEqual(expected, got)
+	}
 }
 
 // Load test data from examples folder
@@ -244,8 +287,19 @@ func (s *SlicingDiceTester) loadTestData(queryType string) interface{} {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return s.decodeJSON(string(file))
+	return s.decodeWithNumberJSON(string(file))
 }
+
+func (s *SlicingDiceTester) decodeWithNumberJSON(jsonData string) interface{} {
+	var f interface{}
+	d := json.NewDecoder(strings.NewReader(jsonData))
+	d.UseNumber()
+	if err := d.Decode(&f); err != nil {
+		log.Fatal(err)
+	}
+	return f
+}
+
 
 func newSlicingDiceTester(apiKey string, verboseOption bool) (t *SlicingDiceTester) {
 	keys := new(slicingdice.APIKey)
