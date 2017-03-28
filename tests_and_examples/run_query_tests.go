@@ -133,7 +133,7 @@ func (s *SlicingDiceTester) indexData(test map[string]interface{}) error {
 
 	fmt.Printf("  Indexing %v %v\n", len(index), entityOrEntities)
 
-	indexDataTranslated := s.translateFieldNames(index)
+	indexDataTranslated := s.translateFieldNames(index, true)
 
 	if s.verbose {
 		fmt.Printf("    - %v\n", indexDataTranslated)
@@ -151,7 +151,7 @@ func (s *SlicingDiceTester) indexData(test map[string]interface{}) error {
 }
 
 // Translate field names to match the name with timestamp
-func (s *SlicingDiceTester) translateFieldNames(jsonData map[string]interface{}) map[string]interface{} {
+func (s *SlicingDiceTester) translateFieldNames(jsonData map[string]interface{}, isRequest bool) map[string]interface{} {
 	dataConverted, _ := json.Marshal(jsonData)
 	dataString := string(dataConverted)
 
@@ -159,7 +159,11 @@ func (s *SlicingDiceTester) translateFieldNames(jsonData map[string]interface{})
 		dataString = strings.Replace(dataString, oldName, newName, -1)
 	}
 
-	return s.client.DecodeJSON(dataString).(map[string]interface{})
+	if isRequest {
+		return s.decodeWithNumberJSON(dataString).(map[string]interface{})
+	} else {
+		return s.client.DecodeJSON(dataString).(map[string]interface{})
+	}
 }
 
 // Execute a query of a determined type on Slicing Dice API
@@ -167,7 +171,7 @@ func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]inter
 	var result interface{}
 	var err error
 	query := test["query"].(map[string]interface{})
-	queryDataTranslated := s.translateFieldNames(query)
+	queryDataTranslated := s.translateFieldNames(query, true)
 
 	fmt.Println("  Querying")
 	if s.verbose {
@@ -195,7 +199,7 @@ func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]inter
 
 // Compare and assert result received from Slicing Dice API
 func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result map[string]interface{}, err error) {
-	expected := s.translateFieldNames(test["expected"].(map[string]interface{}))
+	expected := s.translateFieldNames(test["expected"].(map[string]interface{}), false)
 	if err != nil {
 		s.numFails += 1
 		s.failedTests = append(s.failedTests, test["name"].(string))
@@ -283,10 +287,10 @@ func (s *SlicingDiceTester) loadTestData(queryType string) interface{} {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return s.decodeTestJSON(string(file))
+	return s.decodeWithNumberJSON(string(file))
 }
 
-func (s *SlicingDiceTester) decodeTestJSON(jsonData string) interface{} {
+func (s *SlicingDiceTester) decodeWithNumberJSON(jsonData string) interface{} {
 	var f interface{}
 	d := json.NewDecoder(strings.NewReader(jsonData))
 	d.UseNumber()
