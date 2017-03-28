@@ -294,7 +294,7 @@ func (s *SlicingDice) makeRequest(url string, method string, endpointKeyLevel in
 
 type SDError struct {
 	message string
-	moreInfo string
+	moreInfo interface{}
 	code int
 }
 
@@ -319,10 +319,12 @@ func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string
 	}
 	if val, ok := responseDecode["errors"]; ok {
 		contentErrors := val.([]interface{})[0].(map[string]interface{})
-		moreInfo := "Nothing"
+		var moreInfo interface{}
 
 		if (contentErrors["more-info"] != nil) {
-			moreInfo = contentErrors["more-info"].(string)
+			moreInfo = contentErrors["more-info"]
+		} else {
+			moreInfo = nil
 		}
 
 		return nil, &SDError{contentErrors["message"].(string), moreInfo, res.StatusCode}
