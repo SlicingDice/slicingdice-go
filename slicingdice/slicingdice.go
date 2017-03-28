@@ -315,7 +315,7 @@ func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string
 	result := string(contents)
 	responseDecode := s.DecodeJSON(result).(map[string]interface{})
 	if len(responseDecode) == 0 {
-		return nil, &SDError{"Internal Error", "Nothing", res.StatusCode}
+		return nil, &SDError{"Internal Error", nil, res.StatusCode}
 	}
 	if val, ok := responseDecode["errors"]; ok {
 		contentErrors := val.([]interface{})[0].(map[string]interface{})
@@ -330,7 +330,7 @@ func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string
 		return nil, &SDError{contentErrors["message"].(string), moreInfo, res.StatusCode}
 	}
 	if res.StatusCode >= 400 {
-		return nil, &SDError{"Unknown Error", "Nothing", res.StatusCode}
+		return nil, &SDError{"Unknown Error", nil, res.StatusCode}
 	}
 	return responseDecode, nil
 }
