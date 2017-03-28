@@ -289,6 +289,17 @@ func (s *SlicingDice) makeRequest(url string, method string, endpointKeyLevel in
 	return s.handlerResponse(res, err)
 }
 
+type SDError struct {
+	message string
+	moreInfo string
+	code int
+}
+
+func (e *SDError) Error() string { 
+	return fmt.Sprintf("Error Code: %d \nMessage: %s \nMore Info: %s", e.code, e.message, e.moreInfo)
+}
+
+
 // handlerResponse search errors in the response of the request, both the
 // status code as in the API JSON response.
 func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string]interface{}, error) {
@@ -305,7 +316,13 @@ func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string
 	}
 	if val, ok := responseDecode["errors"]; ok {
 		contentErrors := val.([]interface{})[0].(map[string]interface{})
-		return nil, errors.New("api error: " + contentErrors["message"].(string))
+		moreInfo := "Nothing"
+
+		if (contentErrors["more-info"] != nil) {
+			moreInfo = contentErrors["more-info"].(string)
+		}
+
+		return nil, &SDError{contentErrors["message"].(string), moreInfo, res.StatusCode}
 	}
 	if res.StatusCode >= 400 {
 		return nil, errors.New("api error: " + res.Status)
