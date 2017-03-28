@@ -299,7 +299,7 @@ type SDError struct {
 }
 
 func (e *SDError) Error() string { 
-	return fmt.Sprintf("Error Code: %d \nMessage: %s \nMore Info: %s", e.code, e.message, e.moreInfo)
+	return fmt.Sprintf("Error Code: %d, Message: %s, More Info: %s", e.code, e.message, e.moreInfo)
 }
 
 
