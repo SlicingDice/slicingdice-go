@@ -209,7 +209,7 @@ func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result ma
 				continue
 			}
 
-			if !reflect.DeepEqual(result[key], expected[key]) {
+			if !s.compareJSONValue(result[key], expected[key]) {
 				resultData, _ := json.Marshal(result[key])
 				expectedData, _ := json.Marshal(expected[key])
 
@@ -225,6 +225,54 @@ func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result ma
 				fmt.Println("  Status: Passed\n")
 			}
 		}
+	}
+}
+
+func (s *SlicingDiceTester) compareJSON(expected map[string]interface{}, got map[string]interface{}) bool {
+	if len(expected) != len(got) {
+		return false
+	}
+
+	for key, value := range expected {
+		valueExpected := value
+		valueGot := got[key]
+
+		if !s.compareJSONValue(valueExpected, valueGot) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (s *SlicingDiceTester) compareJSONArray(expected []interface{}, got []interface{}) bool {
+	if len(expected) != len(got) {
+		return false
+	}
+
+	for i, value := range expected {
+		valueExpected := value
+		valueGot := got[i]
+
+		if !s.compareJSONValue(valueExpected, valueGot) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (s *SlicingDiceTester) compareJSONValue(expected interface{}, got interface{}) bool {
+	if reflect.ValueOf(expected).Kind() == reflect.Map {
+		expectedMap := expected.(map[string]interface{})
+		gotMap := got.(map[string]interface{})
+		return s.compareJSON(expectedMap, gotMap)
+	} else if reflect.ValueOf(expected).Kind() == reflect.Slice {
+		expectedArray := expected.([]interface{})
+		gotArray := got.([]interface{})
+		return s.compareJSONArray(expectedArray, gotArray)
+	} else {
+		return reflect.DeepEqual(expected, got)
 	}
 }
 

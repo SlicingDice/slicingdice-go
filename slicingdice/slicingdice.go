@@ -320,7 +320,6 @@ func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string
 func (s *SlicingDice) DecodeJSON(jsonData string) interface{} {
 	var f interface{}
 	d := json.NewDecoder(strings.NewReader(jsonData))
-	d.UseNumber()
 	if err := d.Decode(&f); err != nil {
 		log.Fatal(err)
 	}
