@@ -11,6 +11,7 @@ import (
 	"os"
 	"time"
 	"reflect"
+	"fmt"
 )
 
 var sd_base = os.Getenv("SD_API_ADDRESS")
@@ -312,7 +313,7 @@ func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string
 	result := string(contents)
 	responseDecode := s.decodeJSON(result)
 	if len(responseDecode) == 0 {
-		return nil, errors.New("api error: SlicingDice: Internal error.")
+		return nil, &SDError{"Internal Error", "Nothing", res.StatusCode}
 	}
 	if val, ok := responseDecode["errors"]; ok {
 		contentErrors := val.([]interface{})[0].(map[string]interface{})
@@ -325,7 +326,7 @@ func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string
 		return nil, &SDError{contentErrors["message"].(string), moreInfo, res.StatusCode}
 	}
 	if res.StatusCode >= 400 {
-		return nil, errors.New("api error: " + res.Status)
+		return nil, &SDError{"Unknown Error", "Nothing", res.StatusCode}
 	}
 	return responseDecode, nil
 }
