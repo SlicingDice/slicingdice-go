@@ -11,6 +11,7 @@ import (
 	"os"
 	"time"
 	"reflect"
+	"fmt"
 	"strings"
 	"log"
 )
@@ -291,6 +292,17 @@ func (s *SlicingDice) makeRequest(url string, method string, endpointKeyLevel in
 	return s.handlerResponse(res, err)
 }
 
+type SDError struct {
+	message string
+	moreInfo interface{}
+	code int
+}
+
+func (e *SDError) Error() string { 
+	return fmt.Sprintf("Error Code: %d, Message: %s, More Info: %s", e.code, e.message, e.moreInfo)
+}
+
+
 // handlerResponse search errors in the response of the request, both the
 // status code as in the API JSON response.
 func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string]interface{}, error) {
@@ -303,14 +315,22 @@ func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string
 	result := string(contents)
 	responseDecode := s.DecodeJSON(result).(map[string]interface{})
 	if len(responseDecode) == 0 {
-		return nil, errors.New("api error: SlicingDice: Internal error.")
+		return nil, &SDError{"Internal Error", nil, res.StatusCode}
 	}
 	if val, ok := responseDecode["errors"]; ok {
 		contentErrors := val.([]interface{})[0].(map[string]interface{})
-		return nil, errors.New("api error: " + contentErrors["message"].(string))
+		var moreInfo interface{}
+
+		if (contentErrors["more-info"] != nil) {
+			moreInfo = contentErrors["more-info"]
+		} else {
+			moreInfo = nil
+		}
+
+		return nil, &SDError{contentErrors["message"].(string), moreInfo, res.StatusCode}
 	}
 	if res.StatusCode >= 400 {
-		return nil, errors.New("api error: " + res.Status)
+		return nil, &SDError{"Unknown Error", nil, res.StatusCode}
 	}
 	return responseDecode, nil
 }
