@@ -108,11 +108,6 @@ func hasValidTopValuesQuery(query interface{}) error {
 // has a len less than 100 and if has a valid field.
 func hasValidDataExtractionQuery(query interface{}) error {
 	queryConverted := query.(map[string]interface{})
-	if val, ok := queryConverted["limit"]; ok {
-		if val.(int) > 100 {
-			return errors.New("Data Extraction Validator: the field 'limit' has a value max of 100.")
-		}
-	}
 	if val, ok := queryConverted["fields"]; ok {
 		fields := reflect.ValueOf(val)
 		if fields.Len() > 10 {
