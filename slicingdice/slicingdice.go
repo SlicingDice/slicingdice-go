@@ -79,10 +79,14 @@ func hasValidSavedQuery(query interface{}) error {
 // hasValidCountQuery checks whether the count query passed by user is valid. It
 // validates especially if the query len is less than 10.
 func hasValidCountQuery(query interface{}) error {
-	queryConverted := query.(map[string]interface{})
-	if len(queryConverted) > 10 {
-		return errors.New("Count Query Validator: the query count entity has a limit of 10 queries by request.")
+	switch query.(type) {
+	case []interface{}:
+		querySize := len(query.([]interface{}))
+		if querySize > 10 {
+			return errors.New("Count Query Validator: the query count entity has a limit of 10 queries by request.")
+		}
 	}
+
 	return nil
 }
 
@@ -293,7 +297,7 @@ type SDError struct {
 	code int
 }
 
-func (e *SDError) Error() string { 
+func (e *SDError) Error() string {
 	return fmt.Sprintf("Error Code: %d, Message: %s, More Info: %s", e.code, e.message, e.moreInfo)
 }
 
@@ -396,7 +400,7 @@ func (s *SlicingDice) CreateField(query interface{}) (map[string]interface{}, er
 
 // CountEntity makes a count entity query
 // It returns a JSON converted in map[string]interface{}
-func (s *SlicingDice) CountEntity(query map[string]interface{}) (map[string]interface{}, error) {
+func (s *SlicingDice) CountEntity(query interface{}) (map[string]interface{}, error) {
 	url := s.getFullUrl(COUNT_ENTITY)
 	validate := hasValidCountQuery(query)
 	if validate != nil {
@@ -414,7 +418,7 @@ func (s *SlicingDice) CountEntityTotal() (map[string]interface{}, error) {
 
 // CountEvent makes a count event query
 // It returns a JSON converted in map[string]interface{}
-func (s *SlicingDice) CountEvent(query map[string]interface{}) (map[string]interface{}, error) {
+func (s *SlicingDice) CountEvent(query interface{}) (map[string]interface{}, error) {
 	url := s.getFullUrl(COUNT_EVENT)
 	validate := hasValidCountQuery(query)
 	if validate != nil {

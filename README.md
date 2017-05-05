@@ -59,13 +59,14 @@ func main() {
 
     // Querying data
     query_data := map[string]interface{}{
-        "users-between-20-and-40": []map[string]interface{} {
-            map[string]interface{}{
-                "age": map[string][]int{
-                    "range": []int{20, 40},
+            "query-name": "users-between-20-and-40",
+            "query": []map[string]interface{} {
+                map[string]interface{}{
+                    "age": map[string][]int{
+                        "range": []int{20, 40},
+                    },
                 },
             },
-        },
     }
 
     result, _ := client.CountEntity(query_data)
@@ -405,28 +406,35 @@ func main() {
     // If you need production end-point you can remove this
     client.Test = true
 
-    query := map[string]interface{}{
-        "corolla-or-fit": []interface{}{
-            map[string]interface{}{
-                "car-model": map[string]string{
-                    "equals": "toyota corolla",
+    query := []interface{}{
+        map[string]interface{}{
+            "query-name": "corolla-or-fit",
+            "query": []interface{}{
+                map[string]interface{}{
+                    "car-model": map[string]string{
+                        "equals": "toyota corolla",
+                    },
+                },
+                "or",
+                map[string]interface{}{
+                    "car-model": map[string]string{
+                        "equals": "honda fit",
+                    },
                 },
             },
-            "or",
-            map[string]interface{}{
-                "car-model": map[string]string{
-                    "equals": "honda fit",
-                },
-            },
+            "bypass-cache": false,
         },
-        "ford-ka": []map[string]interface{}{
-            map[string]interface{}{
-                "car-model": map[string]string{
-                    "equals": "ford ka",
+        map[string]interface{}{
+            "query-name": "ford-ka",
+            "query": []map[string]interface{}{
+                map[string]interface{}{
+                    "car-model": map[string]string{
+                        "equals": "ford ka",
+                    },
                 },
             },
+            "bypass-cache": false,
         },
-        "bypass-cache": false,
     }
 
     fmt.Println(client.CountEntity(query))
@@ -467,30 +475,37 @@ func main() {
     // If you need production end-point you can remove this
     client.Test = true
 
-    query := map[string]interface{}{
-        "test-drives-in-ny": []map[string]interface{}{
-            map[string]interface{}{
-                "test-drives": map[string]interface{}{
-                    "equals": "NY",
-                    "between": []string{
-                        "2016-08-16T00:00:00Z",
-                        "2016-08-18T00:00:00Z",
+    query := []interface{}{
+        map[string]interface{}{
+            "query-name": "test-drives-in-ny",
+            "query": []map[string]interface{}{
+                map[string]interface{}{
+                    "test-drives": map[string]interface{}{
+                        "equals": "NY",
+                        "between": []string{
+                            "2016-08-16T00:00:00Z",
+                            "2016-08-18T00:00:00Z",
+                        },
                     },
                 },
             },
+            "bypass-cache": true,
         },
-        "test-drives-in-ca": []map[string]interface{}{
-            map[string]interface{}{
-                "test-drives": map[string]interface{}{
-                    "equals": "CA",
-                    "between": []string{
-                        "2016-04-04T00:00:00Z",
-                        "2016-04-06T00:00:00Z",
+        map[string]interface{}{
+            "query-name": "test-drives-in-ca",
+            "query": []map[string]interface{}{
+                map[string]interface{}{
+                    "test-drives": map[string]interface{}{
+                        "equals": "CA",
+                        "between": []string{
+                            "2016-04-04T00:00:00Z",
+                            "2016-04-06T00:00:00Z",
+                        },
                     },
                 },
             },
+            "bypass-cache": true,
         },
-        "bypass-cache": true,
     }
     fmt.Println(client.CountEvent(query))
 }

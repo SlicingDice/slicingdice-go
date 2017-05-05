@@ -311,7 +311,7 @@ func newSlicingDiceTester(apiKey string, verboseOption bool) (t *SlicingDiceTest
 
 	// Sleep Time in seconds
 	sdTester.sleepTime = 10
-	// Path for examples 
+	// Path for examples
 	sdTester.path = "examples/"
 	// Examples files extension
 	sdTester.extension = ".json"
@@ -360,7 +360,7 @@ func main() {
 	}
 
 	// Testing class with demo API key
-    // You can get a new demo API key here: http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
+	// You can get a new demo API key here: http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
 	sdTester := newSlicingDiceTester(
 		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vNzRtIiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6MjM1LCJjbGllbnRfaWQiOjEwfQ.f9yLh6M82NX06r3TemFLmZ2U-tadBqgKF2EuONZrOK0",
 		false,
