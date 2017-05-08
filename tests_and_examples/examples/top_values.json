@@ -8,7 +8,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -1249,7 +1249,7 @@
                 "api-name": "string-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value_2"
             },
@@ -1589,7 +1589,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "integer-test-field": 1000002
             },
@@ -1937,7 +1937,7 @@
                 "name": "enumerated_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "enumerated-test-field": 1000002
             },
@@ -2271,7 +2271,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -3512,7 +3512,7 @@
                 "api-name": "string-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value_2"
             },
@@ -3852,7 +3852,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "integer-test-field": 1000001
             },
@@ -4200,7 +4200,7 @@
                 "name": "enumerated_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "enumerated-test-field": 1000020
             },
@@ -4535,7 +4535,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -5776,7 +5776,7 @@
                 "api-name": "string-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:contains_2_value"
             },
@@ -6116,7 +6116,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "integer-test-field": 1000002
             },
@@ -6464,7 +6464,7 @@
                 "name": "enumerated_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "enumerated-test-field": 1000002
             },
@@ -6799,7 +6799,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -8041,7 +8041,7 @@
                 "api-name": "string-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value_2"
             },
@@ -8382,7 +8382,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "integer-test-field": 1000002
             },
@@ -8731,7 +8731,7 @@
                 "name": "enumerated_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "enumerated-test-field": 1000002
             },
@@ -9067,7 +9067,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -10308,7 +10308,7 @@
                 "api-name": "string-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:starts_2_value"
             },
@@ -10648,7 +10648,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "integer-test-field": 12345622
             },
@@ -10996,7 +10996,7 @@
                 "name": "enumerated_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "enumerated-test-field": 12345622
             },
@@ -11330,7 +11330,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -12571,7 +12571,7 @@
                 "api-name": "string-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_ends_2"
             },
@@ -12911,7 +12911,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "integer-test-field": 2123456
             },
@@ -13259,7 +13259,7 @@
                 "name": "enumerated_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "enumerated-test-field": 2123456
             },
@@ -13589,7 +13589,7 @@
         }
     },
     {
-        "name": "Test for a \"TOP VALUES\" query using field \"STRING-TIME-SERIES\" and parameter \"EQUALS\" with UTC timezone when indexing.",
+        "name": "Test for a \"TOP VALUES\" query using field \"STRING-TIME-SERIES\" and parameter \"EQUALS\" with UTC timezone when inserting.",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -13597,7 +13597,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -14828,7 +14828,7 @@
         }
     },
     {
-        "name": "Test for a \"TOP VALUES\" query using field \"STRING-TIME-SERIES\" and parameter \"EQUALS\" with -3h timezone when indexing.",
+        "name": "Test for a \"TOP VALUES\" query using field \"STRING-TIME-SERIES\" and parameter \"EQUALS\" with -3h timezone when inserting.",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -14836,7 +14836,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -16067,7 +16067,7 @@
         }
     },
     {
-        "name": "Test for a \"TOP VALUES\" query using field \"STRING-TIME-SERIES\" and parameter \"EQUALS\" with +3h timezone when indexing.",
+        "name": "Test for a \"TOP VALUES\" query using field \"STRING-TIME-SERIES\" and parameter \"EQUALS\" with +3h timezone when inserting.",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -16075,7 +16075,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -17314,7 +17314,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {

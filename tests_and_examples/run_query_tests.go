@@ -48,7 +48,7 @@ func (s *SlicingDiceTester) runTests(queryType string) {
 			s.compareResult(testConverted, nil, err)
 			continue
 		}
-		err = s.indexData(testConverted)
+		err = s.insertData(testConverted)
 		if err != nil {
 			s.compareResult(testConverted, nil, err)
 			continue
@@ -119,11 +119,11 @@ func (s *SlicingDiceTester) emptyFieldTranslation() {
 	s.fieldTranslation = map[string]string{}
 }
 
-// Index data on Slicing Dice API
-func (s *SlicingDiceTester) indexData(test map[string]interface{}) error {
+// Insert data on Slicing Dice API
+func (s *SlicingDiceTester) insertData(test map[string]interface{}) error {
 	var entityOrEntities string
-	index := test["index"].(map[string]interface{})
-	isSingular := len(index) == 1
+	insert := test["insert"].(map[string]interface{})
+	isSingular := len(insert) == 1
 
 	if isSingular {
 		entityOrEntities = "entity"
@@ -131,15 +131,15 @@ func (s *SlicingDiceTester) indexData(test map[string]interface{}) error {
 		entityOrEntities = "entities"
 	}
 
-	fmt.Printf("  Indexing %v %v\n", len(index), entityOrEntities)
+	fmt.Printf("  Inserting %v %v\n", len(insert), entityOrEntities)
 
-	indexDataTranslated := s.translateFieldNames(index, true)
+	insertDataTranslated := s.translateFieldNames(insert, true)
 
 	if s.verbose {
-		fmt.Printf("    - %v\n", indexDataTranslated)
+		fmt.Printf("    - %v\n", insertDataTranslated)
 	}
 
-	_, err := s.client.Index(indexDataTranslated)
+	_, err := s.client.Insert(insertDataTranslated)
 	if err != nil {
 		fmt.Println(err)
 		return err

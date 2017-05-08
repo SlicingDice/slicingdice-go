@@ -1,7 +1,7 @@
 [
     {
         "name": "Test for a \"COUNT ENTITY\" query using fields \"STRING\", \"BOOLEAN\", \"INTEGER\" and \"ENUMERATED\", operator \"AND\" and parameters \"EQUALS\" and \"RANGE\".",
-        "description": "In this test, we first create a \"string\" field called \"string-test-field\", a \"boolean\" field called \"boolean-test-field\", an \"integer\" field called \"integer-test-field\", and an \"enumerated\" field called \"enumerated-test-field\", then we index 50 entities with values \"value:matched_value\", \"true\", 1000001 (integer), and 1000001 (enumerated) and 50 entities with other values, and finally we make a query asking \"How many entities have values \"value:matched_value\", 1000001, true, and enumerated going from 1000000 to 2000000?\" expecting to receive a count of 50 entities",
+        "description": "In this test, we first create a \"string\" field called \"string-test-field\", a \"boolean\" field called \"boolean-test-field\", an \"integer\" field called \"integer-test-field\", and an \"enumerated\" field called \"enumerated-test-field\", then we insert 50 entities with values \"value:matched_value\", \"true\", 1000001 (integer), and 1000001 (enumerated) and 50 entities with other values, and finally we make a query asking \"How many entities have values \"value:matched_value\", 1000001, true, and enumerated going from 1000000 to 2000000?\" expecting to receive a count of 50 entities",
         "fields": [
             {
                 "type": "string",
@@ -37,7 +37,7 @@
                 "name": "enumerated_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "enumerated-test-field": 1000001,
@@ -680,7 +680,7 @@
     },
     {
         "name": "Test for a \"COUNT ENTITY\" query using fields \"STRING\", \"BOOLEAN\", \"ENUMERATED\" and \"DECIMAL\", operator \"AND\" and parameters \"EQUALS\" and \"RANGE\".",
-        "description": "In this test, we first create a \"string\" field called \"string-test-field\", a \"boolean\" field called \"boolean-test-field\", an \"decimal\" field called \"decimal-test-field\", and an \"enumerated\" field called \"enumerated-test-field\", then we index 50 entities with values \"value:matched_value\", \"true\", 1000001.1, and 1000001 and 50 entities with other values, and finally we make a query asking \"How many entities have values \"value:matched_value\", 1000001.1, true, and enumerated going from 1000000 to 2000000?\" expecting to receive a count of 50 entities",
+        "description": "In this test, we first create a \"string\" field called \"string-test-field\", a \"boolean\" field called \"boolean-test-field\", an \"decimal\" field called \"decimal-test-field\", and an \"enumerated\" field called \"enumerated-test-field\", then we insert 50 entities with values \"value:matched_value\", \"true\", 1000001.1, and 1000001 and 50 entities with other values, and finally we make a query asking \"How many entities have values \"value:matched_value\", 1000001.1, true, and enumerated going from 1000000 to 2000000?\" expecting to receive a count of 50 entities",
         "fields": [
             {
                 "type": "string",
@@ -717,7 +717,7 @@
                 "api-name": "decimal-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "decimal-test-field": 1000001.1,
@@ -1360,7 +1360,7 @@
     },
     {
         "name": "Test for a \"COUNT ENTITY\" query using fields \"STRING\", \"BOOLEAN\", \"INTEGER\" and \"ENUMERATED\", operator \"OR\" and parameters \"EQUALS\" and \"RANGE\".",
-        "description": "In this test, we first create a \"string\" field called \"string-test-field\", a \"boolean\" field called \"boolean-test-field\", an \"integer\" field called \"integer-test-field\", and an \"enumerated\" field called \"enumerated-test-field\", then we index 50 entities with values \"value:matched_value\", \"true\", 1000001, and 1000001 and 50 entities with other values, and finally we make a query asking \"How many entities have values \"value:matched_value\", 1000001, true, or enumerated going from 1000000 to 2000000?\" expecting to receive a count of 50 entities",
+        "description": "In this test, we first create a \"string\" field called \"string-test-field\", a \"boolean\" field called \"boolean-test-field\", an \"integer\" field called \"integer-test-field\", and an \"enumerated\" field called \"enumerated-test-field\", then we insert 50 entities with values \"value:matched_value\", \"true\", 1000001, and 1000001 and 50 entities with other values, and finally we make a query asking \"How many entities have values \"value:matched_value\", 1000001, true, or enumerated going from 1000000 to 2000000?\" expecting to receive a count of 50 entities",
         "fields": [
             {
                 "type": "string",
@@ -1396,7 +1396,7 @@
                 "name": "enumerated_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "enumerated-test-field": 1000001,
@@ -2039,7 +2039,7 @@
     },
     {
         "name": "Test for a \"COUNT ENTITY\" query using fields \"STRING\", \"BOOLEAN\", \"ENUMERATED\" and \"DECIMAL\", operator \"OR\" and parameters \"EQUALS\" and \"RANGE\".",
-        "description": "In this test, we first create a \"string\" field called \"string-test-field\", a \"boolean\" field called \"boolean-test-field\", an \"decimal\" field called \"decimal-test-field\", and an \"enumerated\" field called \"enumerated-test-field\", then we index 50 entities with values \"value:matched_value\", \"true\", 1000001.1, and 1000001 and 50 entities with other values, and finally we make a query asking \"How many entities have values \"value:matched_value\", 1000001.1, true, or enumerated going from 1000000 to 2000000?\" expecting to receive a count of 50 entities",
+        "description": "In this test, we first create a \"string\" field called \"string-test-field\", a \"boolean\" field called \"boolean-test-field\", an \"decimal\" field called \"decimal-test-field\", and an \"enumerated\" field called \"enumerated-test-field\", then we insert 50 entities with values \"value:matched_value\", \"true\", 1000001.1, and 1000001 and 50 entities with other values, and finally we make a query asking \"How many entities have values \"value:matched_value\", 1000001.1, true, or enumerated going from 1000000 to 2000000?\" expecting to receive a count of 50 entities",
         "fields": [
             {
                 "type": "string",
@@ -2076,7 +2076,7 @@
                 "api-name": "decimal-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "decimal-test-field": 1000001.1,
@@ -2719,7 +2719,7 @@
     },
     {
         "name": "Test for a \"COUNT ENTITY\" query using field \"STRING\" and parameter \"NOT-EQUALS\".",
-        "description": "In this test, we first create a \"string\" field called \"string-test-field\", then we index 50 entities with values \"value:matched_value\" and 50 entities with other values, and finally we make a query asking \"How many entities don't have value \"value:matched_value\"?\" expecting to receive a count of 50 entities",
+        "description": "In this test, we first create a \"string\" field called \"string-test-field\", then we insert 50 entities with values \"value:matched_value\" and 50 entities with other values, and finally we make a query asking \"How many entities don't have value \"value:matched_value\"?\" expecting to receive a count of 50 entities",
         "fields": [
             {
                 "type": "string",
@@ -2729,7 +2729,7 @@
                 "api-name": "string-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value"
             },
@@ -3051,7 +3051,7 @@
     },
     {
         "name": "Test for a \"COUNT ENTITY\" query using field \"INTEGER\" and parameter \"NOT-EQUALS\".",
-        "description": "In this test, we first create a \"integer\" field called \"integer-test-field\", then we index 50 entities with values 1000001 and 50 entities with other values, and finally we make a query asking \"How many entities don't have value 1000001?\" expecting to receive a count of 50 entities",
+        "description": "In this test, we first create a \"integer\" field called \"integer-test-field\", then we insert 50 entities with values 1000001 and 50 entities with other values, and finally we make a query asking \"How many entities don't have value 1000001?\" expecting to receive a count of 50 entities",
         "fields": [
             {
                 "storage": "latest-value",
@@ -3060,7 +3060,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "integer-test-field": 1000001
             },
@@ -3382,7 +3382,7 @@
     },
     {
         "name": "Test for a \"COUNT ENTITY\" query using field \"DECIMAL\" and parameter \"NOT-EQUALS\".",
-        "description": "In this test, we first create a \"decimal\" field called \"decimal-test-field\", then we index 50 entities with values 1000001.1 and 50 entities with other values, and finally we make a query asking \"How many entities don't have value 1000001.1?\" expecting to receive a count of 50 entities",
+        "description": "In this test, we first create a \"decimal\" field called \"decimal-test-field\", then we insert 50 entities with values 1000001.1 and 50 entities with other values, and finally we make a query asking \"How many entities don't have value 1000001.1?\" expecting to receive a count of 50 entities",
         "fields": [
             {
                 "storage": "latest-value",
@@ -3392,7 +3392,7 @@
                 "api-name": "decimal-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "decimal-test-field": 1000001.1
             },
@@ -3714,7 +3714,7 @@
     },
     {
         "name": "Test for a \"COUNT ENTITY\" query using field \"BOOLEAN\" and parameter \"NOT-EQUALS\".",
-        "description": "In this test, we first create a \"boolean\" field called \"boolean-test-field\", then we index 50 entities with values true and 50 entities with other values, and finally we make a query asking \"How many entities don't have value true?\" expecting to receive a count of 50 entities",
+        "description": "In this test, we first create a \"boolean\" field called \"boolean-test-field\", then we insert 50 entities with values true and 50 entities with other values, and finally we make a query asking \"How many entities don't have value true?\" expecting to receive a count of 50 entities",
         "fields": [
             {
                 "storage": "latest-value",
@@ -3723,7 +3723,7 @@
                 "api-name": "boolean-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "boolean-test-field": "true"
             },
@@ -4045,7 +4045,7 @@
     },
     {
         "name": "Test for a \"COUNT ENTITY\" query using field \"DATE\" and parameter \"NOT-EQUALS\".",
-        "description": "In this test, we first create a \"date\" field called \"date-test-field\", then we index 50 entities with values \"2016-01-01\" and 50 entities with other values, and finally we make a query asking \"How many entities don't have value \"2016-01-01\"?\" expecting to receive a count of 50 entities",
+        "description": "In this test, we first create a \"date\" field called \"date-test-field\", then we insert 50 entities with values \"2016-01-01\" and 50 entities with other values, and finally we make a query asking \"How many entities don't have value \"2016-01-01\"?\" expecting to receive a count of 50 entities",
         "fields": [
             {
                 "storage": "latest-value",
@@ -4054,7 +4054,7 @@
                 "api-name": "date-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "date-test-field": "2016-01-01"
             },
@@ -4411,7 +4411,7 @@
                 "name": "enumerated_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "enumerated-test-field": 87641,
@@ -5100,7 +5100,7 @@
                 "api-name": "decimal-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "decimal-test-field": 21959.5,
@@ -5786,7 +5786,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -7782,7 +7782,7 @@
                 "name": "time_series_string_test_field_2"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -9967,7 +9967,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "boolean-test-field": "true",
@@ -11829,7 +11829,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "time-series-decimal-test-field": [
@@ -13698,7 +13698,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "enumerated-test-field": 1000001,
@@ -15574,7 +15574,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "time-series-decimal-test-field": [
@@ -17420,7 +17420,7 @@
         }
     },
     {
-        "name": "Test for a \"COUNT ENTITY\" query using fields \"INTEGER\" and \"STRING-TIME-SERIES\", operator \"AND\" and parameters \"EQUALS\", \"BETWEEN\" and \"MINFREQ\" with UTC timezone when indexing and querying.",
+        "name": "Test for a \"COUNT ENTITY\" query using fields \"INTEGER\" and \"STRING-TIME-SERIES\", operator \"AND\" and parameters \"EQUALS\", \"BETWEEN\" and \"MINFREQ\" with UTC timezone when inserting and querying.",
         "fields": [
             {
                 "storage": "latest-value",
@@ -17434,7 +17434,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -19166,7 +19166,7 @@
         }
     },
     {
-        "name": "Test for a \"COUNT ENTITY\" query using fields \"INTEGER\" and \"STRING-TIME-SERIES\", operator \"AND\" and parameters \"EQUALS\", \"BETWEEN\" and \"MINFREQ\" with +3h timezone when indexing.",
+        "name": "Test for a \"COUNT ENTITY\" query using fields \"INTEGER\" and \"STRING-TIME-SERIES\", operator \"AND\" and parameters \"EQUALS\", \"BETWEEN\" and \"MINFREQ\" with +3h timezone when inserting.",
         "fields": [
             {
                 "storage": "latest-value",
@@ -19180,7 +19180,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -20912,7 +20912,7 @@
         }
     },
     {
-        "name": "Test for a \"COUNT ENTITY\" query using fields \"INTEGER\" and \"STRING-TIME-SERIES\", operator \"AND\" and parameters \"EQUALS\", \"BETWEEN\" and \"MINFREQ\" with -3h timezone when indexing.",
+        "name": "Test for a \"COUNT ENTITY\" query using fields \"INTEGER\" and \"STRING-TIME-SERIES\", operator \"AND\" and parameters \"EQUALS\", \"BETWEEN\" and \"MINFREQ\" with -3h timezone when inserting.",
         "fields": [
             {
                 "storage": "latest-value",
@@ -20926,7 +20926,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -22658,7 +22658,7 @@
         }
     },
     {
-        "name": "Test for a \"COUNT ENTITY\" query using fields \"INTEGER\" and \"STRING-TIME-SERIES\", operator \"AND\" and parameters \"EQUALS\", \"BETWEEN\" and \"MINFREQ\" with +3h timezone when indexing and querying.",
+        "name": "Test for a \"COUNT ENTITY\" query using fields \"INTEGER\" and \"STRING-TIME-SERIES\", operator \"AND\" and parameters \"EQUALS\", \"BETWEEN\" and \"MINFREQ\" with +3h timezone when inserting and querying.",
         "fields": [
             {
                 "storage": "latest-value",
@@ -22672,7 +22672,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -24406,8 +24406,8 @@
     {
         "name": "Test for a \"COUNT ENTITY\" query using automatically created fields, operator \"AND\" and parameter \"EQUALS\".",
         "fields": [],
-        "index": {
-            "auto-create-fields": true,
+        "insert": {
+            "auto-create": ["table", "column"],
             "24": {
                 "string-test-field": "value:matched_value",
                 "numeric-test-field": 1000001
@@ -24836,8 +24836,8 @@
     {
         "name": "Test for a \"COUNT ENTITY\" query using automatically created fields, operators \"AND\" and \"OR\" and parameter \"EQUALS\".",
         "fields": [],
-        "index": {
-            "auto-create-fields": true,
+        "insert": {
+            "auto-create": ["table", "column"],
             "24": {
                 "string-test-field": "value:matched_value",
                 "boolean-test-field": "true",
@@ -25374,8 +25374,8 @@
     {
         "name": "Test for a \"COUNT ENTITY\" query using automatically created fields, operators \"AND\" and \"OR\" and parameters \"EQUALS\", \"BETWEEN\" and \"MINFREQ\".",
         "fields": [],
-        "index": {
-            "auto-create-fields": true,
+        "insert": {
+            "auto-create": ["table", "column"],
             "24": {
                 "string-test-field": "value:matched_value",
                 "boolean-test-field": "true",
@@ -27229,7 +27229,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -28675,7 +28675,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -30121,7 +30121,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -31567,7 +31567,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -33013,7 +33013,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -34459,7 +34459,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -35905,7 +35905,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -37337,7 +37337,7 @@
         }
     },
     {
-        "name": "Test for a \"COUNT ENTITY\" query using fields \"INTEGER\" and \"STRING-TIME-SERIES\", operator \"AND\" and parameters \"EQUALS\", \"BETWEEN\" and \"MINFREQ\" with UTC timezone when indexing and querying and relative interval containing \"WEEK\".",
+        "name": "Test for a \"COUNT ENTITY\" query using fields \"INTEGER\" and \"STRING-TIME-SERIES\", operator \"AND\" and parameters \"EQUALS\", \"BETWEEN\" and \"MINFREQ\" with UTC timezone when inserting and querying and relative interval containing \"WEEK\".",
         "fields": [
             {
                 "storage": "latest-value",
@@ -37351,7 +37351,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -39097,7 +39097,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {

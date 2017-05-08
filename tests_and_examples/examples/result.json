@@ -9,7 +9,7 @@
                 "api-name": "date-test-field"
             }
         ], 
-        "index": {
+        "insert": {
             "24": {
                 "date-test-field": "2016-01-01"
             }, 
@@ -517,7 +517,7 @@
                 "name": "time_series_string_test_field"
             }
         ], 
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -2757,7 +2757,7 @@
                 "name": "time_series_integer_test_field"
             }
         ], 
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -4998,7 +4998,7 @@
                 "decimal-places": 3
             }
         ], 
-        "index": {
+        "insert": {
             "24": {
                 "time-series-decimal-test-field": [
                     {

@@ -1,7 +1,7 @@
 [
     {
         "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\".",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -9,7 +9,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -1635,7 +1635,7 @@
     },
     {
         "name": "Test for a \"COUNT EVENT\" query using field \"INTEGER-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\".",
-        "description": "In this test, we first create a \"integer-time-series\" field called \"time-series-numeric-test-field\", then we index 3 events with value \"1000001\" for 50 entities and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value 1000001 occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
+        "description": "In this test, we first create a \"integer-time-series\" field called \"time-series-numeric-test-field\", then we insert 3 events with value \"1000001\" for 50 entities and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value 1000001 occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-numeric-test-field",
@@ -1643,7 +1643,7 @@
                 "name": "time_series_numeric_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-numeric-test-field": [
                     {
@@ -3269,7 +3269,7 @@
     },
     {
         "name": "Test for a \"COUNT EVENT\" query using field \"DECIMAL-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\".",
-        "description": "In this test, we first create a \"decimal-time-series\" field called \"time-series-decimal-test-field\", then we index 3 events with value \"1000001.1\" for 50 entities and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value 1000001.1 occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
+        "description": "In this test, we first create a \"decimal-time-series\" field called \"time-series-decimal-test-field\", then we insert 3 events with value \"1000001.1\" for 50 entities and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value 1000001.1 occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-decimal-test-field",
@@ -3278,7 +3278,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-decimal-test-field": [
                     {
@@ -4903,8 +4903,8 @@
         }
     },
     {
-        "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with UTC timezone when indexing and querying.",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
+        "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with UTC timezone when inserting and querying.",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -4912,7 +4912,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -6537,8 +6537,8 @@
         }
     },
     {
-        "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with +3h timezone when indexing.",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities with +3h timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 0 events because all data were outside the queried interval",
+        "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with +3h timezone when inserting.",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities with +3h timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 0 events because all data were outside the queried interval",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -6546,7 +6546,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -8171,8 +8171,8 @@
         }
     },
     {
-        "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with +3h timezone when indexing and querying.",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities with +3h timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07, for +3h timezone?\" expecting to receive a count of 150 events",
+        "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with +3h timezone when inserting and querying.",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities with +3h timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07, for +3h timezone?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -8180,7 +8180,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -9805,8 +9805,8 @@
         }
     },
     {
-        "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with -3h timezone when indexing.",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities with -3h timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07, for +3h timezone?\" expecting to receive a count of 150 events",
+        "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with -3h timezone when inserting.",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities with -3h timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07, for +3h timezone?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -9814,7 +9814,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -11440,7 +11440,7 @@
     },
     {
         "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with relative interval containing \"NOW\" and \"SECONDS\".",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -11448,7 +11448,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -12774,7 +12774,7 @@
     },
     {
         "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with relative interval containing \"NOW\" and \"MINUTE\".",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -12782,7 +12782,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -14108,7 +14108,7 @@
     },
     {
         "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with relative interval containing \"NOW\" and \"HOUR\".",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -14116,7 +14116,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -15442,7 +15442,7 @@
     },
     {
         "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with relative interval containing \"NOW\" and \"DAY\".",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -15450,7 +15450,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -16776,7 +16776,7 @@
     },
     {
         "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with relative interval containing \"NOW\" and \"WEEK\".",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -16784,7 +16784,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -18110,7 +18110,7 @@
     },
     {
         "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with relative interval containing \"NOW\" and \"MONTH\".",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -18118,7 +18118,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -19444,7 +19444,7 @@
     },
     {
         "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with relative interval containing \"NOW\" and \"YEAR\".",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -19452,7 +19452,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -20777,8 +20777,8 @@
         }
     },
     {
-        "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with UTC timezone when indexing and querying and relative interval containing \"WEEK\".",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
+        "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with UTC timezone when inserting and querying and relative interval containing \"WEEK\".",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -20786,7 +20786,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -22412,7 +22412,7 @@
     },
     {
         "name": "Test for a \"COUNT EVENT\" query using field \"STRING-TIME-SERIES\" and parameters \"EQUALS\" and \"BETWEEN\" with relative interval containing \"TODAY\".",
-        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we index 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
+        "description": "In this test, we first create a \"string-time-series\" field called \"time-series-string-test-field\", then we insert 3 events with value \"value:matched_value\" for 50 entities with UTC timezone and 3 events with another value for 50 more entities, and finally we make a query asking \"How many times did an event with value \"value:matched_value\" occurred from 2016-01-01 to 2016-01-07?\" expecting to receive a count of 150 events",
         "fields": [
             {
                 "api-name": "time-series-string-test-field",
@@ -22420,7 +22420,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {

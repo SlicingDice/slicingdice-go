@@ -9,7 +9,7 @@ Official Go client for [SlicingDice](http://www.slicingdice.com/), Data Warehous
 
 If you are new to SlicingDice, check our [quickstart guide](http://panel.slicingdice.com/docs/#quickstart-guide) and learn to use it in 15 minutes.
 
-Please refer to the [SlicingDice official documentation](http://panel.slicingdice.com/docs/) for more information on [analytics databases](http://panel.slicingdice.com/docs/#analytics-concepts), [data modeling](http://panel.slicingdice.com/docs/#data-modeling), [indexing](http://panel.slicingdice.com/docs/#data-indexing), [querying](http://panel.slicingdice.com/docs/#data-querying), [limitations](http://panel.slicingdice.com/docs/#current-slicingdice-limitations) and [API details](http://panel.slicingdice.com/docs/#api-details).
+Please refer to the [SlicingDice official documentation](http://panel.slicingdice.com/docs/) for more information on [analytics databases](http://panel.slicingdice.com/docs/#analytics-concepts), [data modeling](http://panel.slicingdice.com/docs/#data-modeling), [data insertion](http://panel.slicingdice.com/docs/#data-insertion), [querying](http://panel.slicingdice.com/docs/#data-querying), [limitations](http://panel.slicingdice.com/docs/#current-slicingdice-limitations) and [API details](http://panel.slicingdice.com/docs/#api-details).
 
 ## Tests and Examples
 
@@ -48,14 +48,14 @@ func main() {
     // If you need production end-point you can remove this
     client.Test = true
 
-    // Indexing data
-    index_data := map[string]interface{}{
+    // inserting data
+    insert_data := map[string]interface{}{
         "user1@slicingdice.com": map[string]int{
             "age": 22,
         },
-        "auto-create-fields": true,
+        "auto-create": []string{"table", "column"},
     }
-    client.Index(index_data)
+    client.Insert(insert_data)
 
     // Querying data
     query_data := map[string]interface{}{
@@ -225,8 +225,8 @@ func main() {
 }
 ```
 
-### `Index(query interface{})`
-Index data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /index](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-index).
+### `Insert(query interface{})`
+Insert data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /insert](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-insert).
 
 #### Request example
 
@@ -246,7 +246,7 @@ func main() {
     // If you need production end-point you can remove this
     client.Test = true
 
-    indexData := map[string]interface{}{
+    insertData := map[string]interface{}{
         "user1@slicingdice.com": map[string]interface{}{
             "car-model": "Ford Ka",
             "year":      2016,
@@ -283,9 +283,9 @@ func main() {
                 },
             },
         },
-        "auto-create-fields": true,
+        "auto-create": []string{"table", "column"},
     }
-    fmt.Println(client.Index(indexData))
+    fmt.Println(client.Insert(insertData))
 }
 ```
 
@@ -294,8 +294,8 @@ func main() {
 ```json
 {
     "status": "success",
-    "indexed-entities": 4,
-    "indexed-fields": 10,
+    "inserted-entities": 4,
+    "inserted-fields": 10,
     "took": 0.023
 }
 ```
@@ -349,7 +349,7 @@ func main() {
 ```
 
 ### `CountEntityTotal()`
-Count the number of indexed entities. This method corresponds to a [GET request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
+Count the number of inserted entities. This method corresponds to a [GET request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
 
 #### Request example
 
@@ -951,7 +951,7 @@ func main() {
 ```
 
 ### `Result(query interface{})`
-Retrieve indexed values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
+Retrieve inserted values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
 
 #### Request example
 
@@ -1015,7 +1015,7 @@ func main() {
 ```
 
 ### `Score(query interface{})`
-Retrieve indexed values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
+Retrieve inserted values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
 
 #### Request example
 

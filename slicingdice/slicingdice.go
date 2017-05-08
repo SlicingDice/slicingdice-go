@@ -22,7 +22,7 @@ var sd_base = os.Getenv("SD_API_ADDRESS")
 const (
 	RESULT             = "/data_extraction/result/"
 	SCORE              = "/data_extraction/score/"
-	INDEX              = "/index/"
+	INSERT             = "/insert/"
 	FIELD              = "/field/"
 	PROJECT            = "/project/"
 	TOP_VALUES         = "/query/top_values/"
@@ -37,7 +37,7 @@ const (
 /* APIKey is used to access the keys that we insert in the SlicingDice API.
 There is only one rule: if you put the master key, you do not put the other,
 because already by default the client uses for everything. Otherwise,
-use a key to writing, if you want to write (index data, create fields)
+use a key to writing, if you want to write (insert data, create fields)
 and use a key to reading (make queries).
 */
 type APIKey struct {
@@ -380,10 +380,10 @@ func (s *SlicingDice) GetSavedQueries() (map[string]interface{}, error) {
 	return s.makeRequest(url, "GET", 2, nil)
 }
 
-// Index a collection of data in SlicingDice.
+// Insert a collection of data in SlicingDice.
 // It returns a JSON converted in map[string]interface{}
-func (s *SlicingDice) Index(query map[string]interface{}) (map[string]interface{}, error) {
-	url := s.getFullUrl(INDEX)
+func (s *SlicingDice) Insert(query map[string]interface{}) (map[string]interface{}, error) {
+	url := s.getFullUrl(INSERT)
 	return s.makeRequest(url, "POST", 1, query)
 }
 

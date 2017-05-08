@@ -9,7 +9,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "integer-test-field": 1000000
             },
@@ -338,7 +338,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "integer-test-field": 1000000
             },
@@ -667,7 +667,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "integer-test-field": 1000000
             },
@@ -996,7 +996,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "integer-test-field": 1000000
             },
@@ -1338,7 +1338,7 @@
                 "api-name": "date-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "date-test-field": "2016-01-01",
                 "string-test-field": "value:matched_value",
@@ -1896,7 +1896,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "boolean-test-field": true,
@@ -2453,7 +2453,7 @@
                 "name": "uniqueid_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "uniqueid-test-field": "value:matched_value",
@@ -3012,7 +3012,7 @@
                 "api-name": "decimal-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "decimal-test-field": 1000001.123,
@@ -3570,7 +3570,7 @@
                 "api-name": "date-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "date-test-field": "2016-01-01",
                 "string-test-field": "value:matched_value",
@@ -4128,7 +4128,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "boolean-test-field": true,
@@ -4685,7 +4685,7 @@
                 "name": "uniqueid_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "uniqueid-test-field": "value:matched_value",
@@ -5244,7 +5244,7 @@
                 "api-name": "decimal-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "decimal-test-field": 1000001.123,
@@ -5796,7 +5796,7 @@
                 "api-name": "integer-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "integer-test-field": 1000001
@@ -6242,7 +6242,7 @@
                 "api-name": "date-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "date-test-field": "2016-01-01",
                 "string-test-field": "value:matched_value"
@@ -6688,7 +6688,7 @@
                 "api-name": "boolean-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "boolean-test-field": true
@@ -7133,7 +7133,7 @@
                 "name": "uniqueid_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "uniqueid-test-field": "value:matched_value"
@@ -7580,7 +7580,7 @@
                 "api-name": "decimal-test-field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "decimal-test-field": 1000001.123
@@ -8043,7 +8043,7 @@
                 "name": "uniqueid_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "date-test-field": "2016-01-01",
                 "string-test-field": "value:matched_value",
@@ -8832,7 +8832,7 @@
                 "name": "uniqueid_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "date-test-field": "2016-01-01",
                 "string-test-field": "value:matched_value",
@@ -9621,7 +9621,7 @@
                 "name": "uniqueid_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "date-test-field": "2016-01-01",
                 "string-test-field": "value:matched_value",
@@ -10410,7 +10410,7 @@
                 "name": "uniqueid_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "date-test-field": "2016-01-01",
                 "string-test-field": "value:matched_value",
@@ -11174,7 +11174,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -12009,7 +12009,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -13647,7 +13647,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -15286,7 +15286,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-decimal-test-field": [
                     {
@@ -16924,7 +16924,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -17756,7 +17756,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -18588,7 +18588,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -19420,7 +19420,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -20253,7 +20253,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-decimal-test-field": [
                     {
@@ -21086,7 +21086,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-decimal-test-field": [
                     {
@@ -21919,7 +21919,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-decimal-test-field": [
                     {
@@ -22752,7 +22752,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-decimal-test-field": [
                     {
@@ -23597,7 +23597,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -25458,7 +25458,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "integer-test-field": 1000001,
@@ -27320,7 +27320,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "time-series-decimal-test-field": [
@@ -29181,7 +29181,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -31042,7 +31042,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "integer-test-field": 1000001,
@@ -32904,7 +32904,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "time-series-decimal-test-field": [
@@ -34759,7 +34759,7 @@
                 "name": "time_series_string_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-string-test-field": [
                     {
@@ -36508,7 +36508,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "time-series-integer-test-field": [
@@ -38258,7 +38258,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "string-test-field": "value:matched_value",
                 "time-series-decimal-test-field": [
@@ -40000,7 +40000,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -41639,7 +41639,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -43278,7 +43278,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -44917,7 +44917,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -46556,7 +46556,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -48196,7 +48196,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-decimal-test-field": [
                     {
@@ -49836,7 +49836,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-decimal-test-field": [
                     {
@@ -51476,7 +51476,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-decimal-test-field": [
                     {
@@ -53116,7 +53116,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-decimal-test-field": [
                     {
@@ -54756,7 +54756,7 @@
                 "type": "decimal-time-series"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-decimal-test-field": [
                     {
@@ -56395,7 +56395,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -58059,7 +58059,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -59723,7 +59723,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -61379,7 +61379,7 @@
         }
     },
     {
-        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with UTC timezone when indexing.",
+        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with UTC timezone when inserting.",
         "fields": [
             {
                 "type": "integer-time-series",
@@ -61387,7 +61387,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -62214,7 +62214,7 @@
         }
     },
     {
-        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with -3h timezone when indexing.",
+        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with -3h timezone when inserting.",
         "fields": [
             {
                 "type": "integer-time-series",
@@ -62222,7 +62222,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -63049,7 +63049,7 @@
         }
     },
     {
-        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with +3h timezone when indexing.",
+        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with +3h timezone when inserting.",
         "fields": [
             {
                 "type": "integer-time-series",
@@ -63057,7 +63057,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -63879,7 +63879,7 @@
         }
     },
     {
-        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with +3h timezone when indexing and querying.",
+        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with +3h timezone when inserting and querying.",
         "fields": [
             {
                 "type": "integer-time-series",
@@ -63887,7 +63887,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -64714,7 +64714,7 @@
         }
     },
     {
-        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with UTC timezone when indexing and relative interval containing \"WEEK\".",
+        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with UTC timezone when inserting and relative interval containing \"WEEK\".",
         "fields": [
             {
                 "type": "integer-time-series",
@@ -64722,7 +64722,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -65557,7 +65557,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -66292,7 +66292,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -67027,7 +67027,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -67762,7 +67762,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -68497,7 +68497,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -69232,7 +69232,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -69967,7 +69967,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -70702,7 +70702,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -71429,7 +71429,7 @@
         }
     },
     {
-        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with +3h timezone when indexing and querying.",
+        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with +3h timezone when inserting and querying.",
         "fields": [
             {
                 "type": "integer-time-series",
@@ -71437,7 +71437,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -72264,7 +72264,7 @@
         }
     },
     {
-        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with UTC timezone when indexing and relative interval containing \"WEEK\".",
+        "name": "Test for an \"AGGREGATION\" query using field \"INTEGER-TIME-SERIES\" and parameter \"BETWEEN\" with UTC timezone when inserting and relative interval containing \"WEEK\".",
         "fields": [
             {
                 "type": "integer-time-series",
@@ -72272,7 +72272,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
@@ -73107,7 +73107,7 @@
                 "name": "time_series_integer_test_field"
             }
         ],
-        "index": {
+        "insert": {
             "24": {
                 "time-series-integer-test-field": [
                     {
