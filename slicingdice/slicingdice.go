@@ -23,7 +23,7 @@ const (
 	RESULT             = "/data_extraction/result/"
 	SCORE              = "/data_extraction/score/"
 	INSERT             = "/index/"
-	COLUMN             = "/column/"
+	COLUMN             = "/field/"
 	DATABASE           = "/project/"
 	TOP_VALUES         = "/query/top_values/"
 	EXISTS_ENTITY      = "/query/exists/entity/"
