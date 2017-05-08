@@ -22,7 +22,7 @@ var sd_base = os.Getenv("SD_API_ADDRESS")
 const (
 	RESULT             = "/data_extraction/result/"
 	SCORE              = "/data_extraction/score/"
-	INSERT             = "/insert/"
+	INSERT             = "/index/"
 	FIELD              = "/field/"
 	PROJECT            = "/project/"
 	TOP_VALUES         = "/query/top_values/"
