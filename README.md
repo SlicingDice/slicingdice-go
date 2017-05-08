@@ -89,8 +89,8 @@ func main() {
 * `key (APIKey)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API.
 * `timeout (int)` - Amount of time, in seconds, to wait for results for each request.
 
-### `GetProjects()`
-Get all created projects, both active and inactive ones. This method corresponds to a [GET request at /project](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-project). **IMPORTANT:** You can't make this request on tests end-point
+### `GetDatabase()`
+Get information about the current SlicingDice database. This method corresponds to a [GET request at /database](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-database). **IMPORTANT:** You can't make this request on tests end-point
 
 #### Request example
 
@@ -106,7 +106,7 @@ func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_API_KEY"
     client := slicingdice.New(keys, 60)
-    fmt.Println(client.GetProjects())
+    fmt.Println(client.GetDatabase())
 }
 ```
 
@@ -116,16 +116,16 @@ func main() {
 {
     "active": [
         {
-            "name": "Project 1",
-            "description": "My first project",
+            "name": "Database 1",
+            "description": "My first database",
             "data-expiration": 30,
             "created-at": "2016-04-05T10:20:30Z"
         }
     ],
     "inactive": [
         {
-            "name": "Project 2",
-            "description": "My second project",
+            "name": "Database 2",
+            "description": "My second database",
             "data-expiration": 90,
             "created-at": "2016-04-05T10:20:30Z"
         }
@@ -133,8 +133,8 @@ func main() {
 }
 ```
 
-### `GetFields()`
-Get all created fields, both active and inactive ones. This method corresponds to a [GET request at /field](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-field).
+### `GetColumns()`
+Get all created columns, both active and inactive ones. This method corresponds to a [GET request at /column](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-column).
 
 #### Request example
 
@@ -152,7 +152,7 @@ func main() {
     client := slicingdice.New(keys, 60)
     // If you need production end-point you can remove this
     client.Test = true
-    fmt.Println(client.GetFields())
+    fmt.Println(client.GetColumns())
 }
 ```
 
@@ -184,8 +184,8 @@ func main() {
 }
 ```
 
-### `CreateField(query interface{})`
-Create a new field. This method corresponds to a [POST request at /field](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-field).
+### `CreateColumn(query interface{})`
+Create a new column. This method corresponds to a [POST request at /column](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-column).
 
 #### Request example
 
@@ -205,14 +205,14 @@ func main() {
     // If you need production end-point you can remove this
     client.Test = true
 
-    fieldData := map[string]interface{}{
+    columnData := map[string]interface{}{
         "name":        "Year",
         "type":        "integer",
         "description": "Year of manufacturing",
         "storage":     "latest-value",
     }
 
-    fmt.Println(client.CreateField(fieldData))
+    fmt.Println(client.CreateColumn(columnData))
 }
 ```
 
@@ -295,13 +295,13 @@ func main() {
 {
     "status": "success",
     "inserted-entities": 4,
-    "inserted-fields": 10,
+    "inserted-columns": 10,
     "took": 0.023
 }
 ```
 
 ### `ExistsEntity(ids)`
-Verify which entities exist in a project given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
+Verify which entities exist in a database given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
 
 #### Request example
 
@@ -598,7 +598,7 @@ func main() {
 ```
 
 ### `Aggregation(query interface{})`
-Return the aggregation of all fields in the given query. This method corresponds to a [POST request at /query/aggregation](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-aggregation).
+Return the aggregation of all columns in the given query. This method corresponds to a [POST request at /query/aggregation](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-aggregation).
 
 #### Request example
 
@@ -985,7 +985,7 @@ func main() {
                 },
             },
         },
-        "fields":     []string{"car-model", "year"},
+        "columns":     []string{"car-model", "year"},
         "limit":      2,
     }
 
@@ -1049,7 +1049,7 @@ func main() {
                 },
             },
         },
-        "fields":     []string{"car-model", "year"},
+        "columns":     []string{"car-model", "year"},
         "limit":      2,
     }
 

@@ -15,7 +15,7 @@ import (
 
 type SlicingDiceTester struct {
 	client           *slicingdice.SlicingDice
-	fieldTranslation map[string]string
+	columnTranslation map[string]string
 	sleepTime        int
 	path             string
 	extension        string
@@ -34,7 +34,7 @@ func (s *SlicingDiceTester) runTests(queryType string) {
 		var err error
 		var result map[string]interface{}
 		testConverted := test.(map[string]interface{})
-		s.emptyFieldTranslation()
+		s.emptyColumnTranslation()
 
 		fmt.Printf("(%v/%v) Executing test \"%v\"\n", i+1, numTests, testConverted["name"])
 
@@ -43,7 +43,7 @@ func (s *SlicingDiceTester) runTests(queryType string) {
 		}
 
 		fmt.Printf("  Query type: %v\n", queryType)
-		err = s.createFields(testConverted)
+		err = s.createColumns(testConverted)
 		if err != nil {
 			s.compareResult(testConverted, nil, err)
 			continue
@@ -63,49 +63,49 @@ func (s *SlicingDiceTester) runTests(queryType string) {
 	}
 }
 
-// Create fields on Slicing Dice API
-func (s *SlicingDiceTester) createFields(test map[string]interface{}) error {
-	var fieldOrFields string
-	fields := test["fields"].([]interface{})
-	isSingular := len(fields) == 1
+// Create columns on Slicing Dice API
+func (s *SlicingDiceTester) createColumns(test map[string]interface{}) error {
+	var columnOrColumns string
+	columns := test["columns"].([]interface{})
+	isSingular := len(columns) == 1
 
 	if isSingular {
-		fieldOrFields = "field"
+		columnOrColumns = "column"
 	} else {
-		fieldOrFields = "fields"
+		columnOrColumns = "columns"
 	}
 
-	fmt.Printf("  Creating %v %v\n", len(fields), fieldOrFields)
+	fmt.Printf("  Creating %v %v\n", len(columns), columnOrColumns)
 
-	for _, field := range fields {
-		newField := s.appendTimestampToFieldName(field.(map[string]interface{}))
-		_, err := s.client.CreateField(newField)
+	for _, column := range columns {
+		newColumn := s.appendTimestampToColumnName(column.(map[string]interface{}))
+		_, err := s.client.CreateColumn(newColumn)
 
 		if err != nil {
 			return err
 		}
 
 		if s.verbose {
-			fmt.Printf("    - %v\n", newField["api-name"])
+			fmt.Printf("    - %v\n", newColumn["api-name"])
 		}
 	}
 	return nil
 }
 
-/* Append a timestamp to field name
+/* Append a timestamp to column name
 This technique allows the same test suite to be executed over and over
-again, since each execution will use different field names.
+again, since each execution will use different column names.
 */
-func (s *SlicingDiceTester) appendTimestampToFieldName(field map[string]interface{}) map[string]interface{} {
-	oldName := fmt.Sprintf("\"%v\"", field["api-name"])
+func (s *SlicingDiceTester) appendTimestampToColumnName(column map[string]interface{}) map[string]interface{} {
+	oldName := fmt.Sprintf("\"%v\"", column["api-name"])
 
 	timestamp := s.getTimestamp()
-	field["name"] = field["name"].(string) + timestamp
-	field["api-name"] = field["api-name"].(string) + timestamp
-	newName := fmt.Sprintf("\"%v\"", field["api-name"])
+	column["name"] = column["name"].(string) + timestamp
+	column["api-name"] = column["api-name"].(string) + timestamp
+	newName := fmt.Sprintf("\"%v\"", column["api-name"])
 
-	s.fieldTranslation[oldName] = newName
-	return field
+	s.columnTranslation[oldName] = newName
+	return column
 }
 
 // Get actual timestamp on string
@@ -114,9 +114,9 @@ func (s *SlicingDiceTester) getTimestamp() string {
 	return fmt.Sprintf("%v", now)
 }
 
-// Erase field translation map
-func (s *SlicingDiceTester) emptyFieldTranslation() {
-	s.fieldTranslation = map[string]string{}
+// Erase column translation map
+func (s *SlicingDiceTester) emptyColumnTranslation() {
+	s.columnTranslation = map[string]string{}
 }
 
 // Insert data on Slicing Dice API
@@ -133,7 +133,7 @@ func (s *SlicingDiceTester) insertData(test map[string]interface{}) error {
 
 	fmt.Printf("  Inserting %v %v\n", len(insert), entityOrEntities)
 
-	insertDataTranslated := s.translateFieldNames(insert, true)
+	insertDataTranslated := s.translateColumnNames(insert, true)
 
 	if s.verbose {
 		fmt.Printf("    - %v\n", insertDataTranslated)
@@ -150,12 +150,12 @@ func (s *SlicingDiceTester) insertData(test map[string]interface{}) error {
 	return nil
 }
 
-// Translate field names to match the name with timestamp
-func (s *SlicingDiceTester) translateFieldNames(jsonData map[string]interface{}, isRequest bool) map[string]interface{} {
+// Translate column names to match the name with timestamp
+func (s *SlicingDiceTester) translateColumnNames(jsonData map[string]interface{}, isRequest bool) map[string]interface{} {
 	dataConverted, _ := json.Marshal(jsonData)
 	dataString := string(dataConverted)
 
-	for oldName, newName := range s.fieldTranslation {
+	for oldName, newName := range s.columnTranslation {
 		dataString = strings.Replace(dataString, oldName, newName, -1)
 	}
 
@@ -171,7 +171,7 @@ func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]inter
 	var result interface{}
 	var err error
 	query := test["query"].(map[string]interface{})
-	queryDataTranslated := s.translateFieldNames(query, true)
+	queryDataTranslated := s.translateColumnNames(query, true)
 
 	fmt.Println("  Querying")
 	if s.verbose {
@@ -199,7 +199,7 @@ func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]inter
 
 // Compare and assert result received from Slicing Dice API
 func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result map[string]interface{}, err error) {
-	expected := s.translateFieldNames(test["expected"].(map[string]interface{}), false)
+	expected := s.translateColumnNames(test["expected"].(map[string]interface{}), false)
 	if err != nil {
 		s.numFails += 1
 		s.failedTests = append(s.failedTests, test["name"].(string))
