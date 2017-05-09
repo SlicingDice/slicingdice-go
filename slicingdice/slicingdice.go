@@ -380,7 +380,7 @@ func (s *SlicingDice) GetSavedQueries() (map[string]interface{}, error) {
 	return s.makeRequest(url, "GET", 2, nil)
 }
 
-// Insert a collection of data in SlicingDice.
+// Inserts data in a SlicingDice database.
 // It returns a JSON converted in map[string]interface{}
 func (s *SlicingDice) Insert(query map[string]interface{}) (map[string]interface{}, error) {
 	url := s.getFullUrl(INSERT)

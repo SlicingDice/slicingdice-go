@@ -48,7 +48,7 @@ func main() {
     // If you need production end-point you can remove this
     client.Test = true
 
-    // inserting data
+    // Inserting data
     insert_data := map[string]interface{}{
         "user1@slicingdice.com": map[string]int{
             "age": 22,
@@ -973,7 +973,7 @@ func main() {
                 },
             },
         },
-        "columns":     []string{"car-model", "year"},
+        "columns":    []string{"car-model", "year"},
         "limit":      2,
     }
 
@@ -1037,7 +1037,7 @@ func main() {
                 },
             },
         },
-        "columns":     []string{"car-model", "year"},
+        "columns":    []string{"car-model", "year"},
         "limit":      2,
     }
 
