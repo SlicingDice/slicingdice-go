@@ -22,9 +22,9 @@ var sd_base = os.Getenv("SD_API_ADDRESS")
 const (
 	RESULT             = "/data_extraction/result/"
 	SCORE              = "/data_extraction/score/"
-	INSERT             = "/index/"
-	COLUMN             = "/field/"
-	DATABASE           = "/project/"
+	INSERT             = "/insert/"
+	COLUMN             = "/column/"
+	DATABASE           = "/database/"
 	TOP_VALUES         = "/query/top_values/"
 	EXISTS_ENTITY      = "/query/exists/entity/"
 	COUNT_ENTITY       = "/query/count/entity/"
