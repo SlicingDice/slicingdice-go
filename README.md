@@ -362,7 +362,7 @@ func main() {
 		},
 	}
 
-	fmt.Println(client.CountEntityTotal(tables))
+    fmt.Println(client.CountEntityTotal(tables))
 }
 ```
 
