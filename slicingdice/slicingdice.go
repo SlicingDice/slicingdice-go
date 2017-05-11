@@ -22,9 +22,9 @@ var sd_base = os.Getenv("SD_API_ADDRESS")
 const (
 	RESULT             = "/data_extraction/result/"
 	SCORE              = "/data_extraction/score/"
-	INDEX              = "/index/"
-	FIELD              = "/field/"
-	PROJECT            = "/project/"
+	INSERT             = "/insert/"
+	COLUMN             = "/column/"
+	DATABASE           = "/database/"
 	TOP_VALUES         = "/query/top_values/"
 	EXISTS_ENTITY      = "/query/exists/entity/"
 	COUNT_ENTITY       = "/query/count/entity/"
@@ -37,7 +37,7 @@ const (
 /* APIKey is used to access the keys that we insert in the SlicingDice API.
 There is only one rule: if you put the master key, you do not put the other,
 because already by default the client uses for everything. Otherwise,
-use a key to writing, if you want to write (index data, create fields)
+use a key to writing, if you want to write (insert data, create columns)
 and use a key to reading (make queries).
 */
 type APIKey struct {
@@ -48,7 +48,7 @@ type APIKey struct {
 }
 
 // SlicingDice is the main structure of slicingdice. Through it, we will make queries,
-// we will create fields, we'll take projects, etc.
+// we will create columns, we'll take databases, etc.
 type SlicingDice struct {
 	key     map[string]string
 	timeout int
@@ -79,25 +79,29 @@ func hasValidSavedQuery(query interface{}) error {
 // hasValidCountQuery checks whether the count query passed by user is valid. It
 // validates especially if the query len is less than 10.
 func hasValidCountQuery(query interface{}) error {
-	queryConverted := query.(map[string]interface{})
-	if len(queryConverted) > 10 {
-		return errors.New("Count Query Validator: the query count entity has a limit of 10 queries by request.")
+	switch query.(type) {
+	case []interface{}:
+		querySize := len(query.([]interface{}))
+		if querySize > 10 {
+			return errors.New("Count Query Validator: the query count entity has a limit of 10 queries by request.")
+		}
 	}
+
 	return nil
 }
 
 // hasValidTopValuesQuery checks whether the top values query passed by user is valid. It
-// validates especially if the query len is less than 5 and field len is less than 6.
+// validates especially if the query len is less than 5 and column len is less than 6.
 func hasValidTopValuesQuery(query interface{}) error {
 	queryConverted := query.(map[string]interface{})
 	// check query limit
 	if len(queryConverted) > 5 {
 		return errors.New("Top Values Validator: the top values query has a limit of 5 queries by request.")
 	}
-	// check field limit
+	// check column limit
 	for _, value := range queryConverted {
 		if len(value.(map[string]interface{})) > 6 {
-			return errors.New("Top Values Validator: the query exceeds the limit of fields per query in request")
+			return errors.New("Top Values Validator: the query exceeds the limit of columns per query in request")
 		}
 	}
 	return nil
@@ -105,84 +109,84 @@ func hasValidTopValuesQuery(query interface{}) error {
 
 // hasValidDataExtractionQuery checks whether the data extraction(result and score)
 // query passed by user is valid. It validates especially if the 'limit' key
-// has a len less than 100 and if has a valid field.
+// has a len less than 100 and if has a valid column.
 func hasValidDataExtractionQuery(query interface{}) error {
 	queryConverted := query.(map[string]interface{})
-	if val, ok := queryConverted["fields"]; ok {
-		fields := reflect.ValueOf(val)
-		if fields.Len() > 10 {
-			return errors.New("Data Extraction Validator: The key 'fields' in data extraction result must have up to 10 fields.")
+	if val, ok := queryConverted["columns"]; ok {
+		columns := reflect.ValueOf(val)
+		if columns.Len() > 10 {
+			return errors.New("Data Extraction Validator: The key 'columns' in data extraction result must have up to 10 columns.")
 		}
 	}
 	return nil
 }
 
-// hasValidField checks whether the new field is valid. Checks type, name,
+// hasValidColumn checks whether the new column is valid. Checks type, name,
 // description; enumerate, decimal-place and string types.
-func hasValidField(query interface{}) error {
+func hasValidColumn(query interface{}) error {
 	if reflect.ValueOf(query).Kind() == reflect.Slice {
-		fieldData := query.([]interface{})
-		for _, field := range fieldData {
-			field := field.(map[string]interface{})
-	        validateField(field)
+		columnData := query.([]interface{})
+		for _, column := range columnData {
+			column := column.(map[string]interface{})
+	        validateColumn(column)
 	    }
 	} else {
 		query := query.(map[string]interface{})
-		validateField(query)
+		validateColumn(query)
 	}
 	return nil
 }
 
-func validateField(query map[string]interface{}) error {
-	validTypeFields := []string{
+func validateColumn(query map[string]interface{}) error {
+	validTypeColumns := []string{
 		"unique-id", "boolean", "string", "integer", "decimal",
 		"enumerated", "date", "integer-time-series",
 		"decimal-time-series", "string-time-series",
 	}
 	// validate name
 	if _, ok := query["name"]; !ok {
-		return errors.New("Field Validator: the field should have a name.")
+		return errors.New("Column Validator: the column should have a name.")
 	}
 	name := query["name"]
 	if len(name.(string)) > 80 {
-		return errors.New("Field Validator: the field's name have a very big name.(Max: 80 chars)")
+		return errors.New("Column Validator: the column's name have a very big name.(Max: 80 chars)")
 	}
 	// validate description
 	if _, ok := query["description"]; ok {
 		description := query["description"]
 		if len(description.(string)) > 300 {
-			return errors.New("Field Validator: the field's description have a very big name.(Max: 300chars)")
+			return errors.New("Column Validator: the column's description have a very big name.(Max: 300chars)")
 		}
 	}
-	// validate type field
+	// validate type column
 	if _, ok := query["type"]; !ok {
-		return errors.New("Field Validator: the field should have a type.")
+		return errors.New("Column Validator: the column should have a type.")
 	}
-	typeField := query["type"].(string)
-	if !stringInSlice(typeField, validTypeFields) {
-		return errors.New("Field Validator: this field have a invalid type.")
+	typeColumn := query["type"].(string)
+	if !stringInSlice(typeColumn, validTypeColumns) {
+		return errors.New("Column Validator: this column have a invalid type.")
 	}
 	// validate decimal place key
 	if _, ok := query["decimal-place"]; ok {
 		decimalTypes := []string{"decimal", "decimal-time-series"}
 		if !stringInSlice(query["type"].(string), decimalTypes) {
-			return errors.New("Field Validator: this field is only accepted on type 'decimal' or 'decimal-time-series'.")
+			return errors.New("Column Validator: this column is only accepted on type 'decimal' or 'decimal-time-series'.")
 		}
 	}
-	// validate string field type
+	// validate string column type
 	if query["type"] == "string" {
 		if _, ok := query["cardinality"]; !ok {
-			return errors.New("Field Validator: the field with type string should have 'cardinality' key.")
+			return errors.New("Column Validator: the column with type string should have 'cardinality' key.")
 		}
 		cardinalityTypes := []string{"high", "low"}
 		if !stringInSlice(query["cardinality"].(string), cardinalityTypes) {
-			return errors.New("Field Validator: the field 'cardinality' has invalid value.")
+			return errors.New("Column Validator: the column 'cardinality' has invalid value.")
 		}
 	}
-	// validate enumerated field
+	// validate enumerated column
 	if query["type"] == "enumerated" {
 		if _, ok := query["range"]; !ok {
-			return errors.New("Field Validator: the 'enumerate' type needs of the 'range' parameter.")
+			return errors.New("Column Validator: the 'enumerate' type needs of the 'range' parameter.")
 		}
 	}
 	return nil
@@ -293,7 +297,7 @@ type SDError struct {
 	code int
 }
 
-func (e *SDError) Error() string { 
+func (e *SDError) Error() string {
 	return fmt.Sprintf("Error Code: %d, Message: %s, More Info: %s", e.code, e.message, e.moreInfo)
 }
 
@@ -330,7 +334,7 @@ func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string
 	return responseDecode, nil
 }
 
-// decodeJSON converts string JSON to map[string]interface{}, its length is 0
+// DecodeJSON converts string JSON to map[string]interface{}, its length is 0
 // in case of JSON parsing error
 func (s *SlicingDice) DecodeJSON(jsonData string) interface{} {
 	var f interface{}
@@ -341,17 +345,17 @@ func (s *SlicingDice) DecodeJSON(jsonData string) interface{} {
 	return f
 }
 
-// Project get all projects in your SlicingDice account
+// GetDatabase gets information about the current SlicingDice database
 // It returns a JSON converted in map[string]interface{}
-func (s *SlicingDice) GetProjects() (map[string]interface{}, error) {
-	url := s.getFullUrl(PROJECT)
+func (s *SlicingDice) GetDatabase() (map[string]interface{}, error) {
+	url := s.getFullUrl(DATABASE)
 	return s.makeRequest(url, "GET", 2, nil)
 }
 
-// GetFields get fields stored in your SlicingDice account
+// GetColumns get columns stored in your SlicingDice account
 // It returns a JSON converted in map[string]interface{}
-func (s *SlicingDice) GetFields() (map[string]interface{}, error) {
-	url := s.getFullUrl(FIELD)
+func (s *SlicingDice) GetColumns() (map[string]interface{}, error) {
+	url := s.getFullUrl(COLUMN)
 	return s.makeRequest(url, "GET", 2, nil)
 }
 
@@ -376,18 +380,18 @@ func (s *SlicingDice) GetSavedQueries() (map[string]interface{}, error) {
 	return s.makeRequest(url, "GET", 2, nil)
 }
 
-// Index a collection of data in SlicingDice.
+// Inserts data in a SlicingDice database.
 // It returns a JSON converted in map[string]interface{}
-func (s *SlicingDice) Index(query map[string]interface{}) (map[string]interface{}, error) {
-	url := s.getFullUrl(INDEX)
+func (s *SlicingDice) Insert(query map[string]interface{}) (map[string]interface{}, error) {
+	url := s.getFullUrl(INSERT)
 	return s.makeRequest(url, "POST", 1, query)
 }
 
-// CreateField create a field in SlicingDice
+// CreateColumn create a column in SlicingDice
 // It returns a JSON converted in map[string]interface{}
-func (s *SlicingDice) CreateField(query interface{}) (map[string]interface{}, error) {
-	url := s.getFullUrl(FIELD)
-	validate := hasValidField(query)
+func (s *SlicingDice) CreateColumn(query interface{}) (map[string]interface{}, error) {
+	url := s.getFullUrl(COLUMN)
+	validate := hasValidColumn(query)
 	if validate != nil {
 		return nil, validate
 	}
@@ -396,7 +400,7 @@ func (s *SlicingDice) CreateField(query interface{}) (map[string]interface{}, er
 
 // CountEntity makes a count entity query
 // It returns a JSON converted in map[string]interface{}
-func (s *SlicingDice) CountEntity(query map[string]interface{}) (map[string]interface{}, error) {
+func (s *SlicingDice) CountEntity(query interface{}) (map[string]interface{}, error) {
 	url := s.getFullUrl(COUNT_ENTITY)
 	validate := hasValidCountQuery(query)
 	if validate != nil {
@@ -414,7 +418,7 @@ func (s *SlicingDice) CountEntityTotal() (map[string]interface{}, error) {
 
 // CountEvent makes a count event query
 // It returns a JSON converted in map[string]interface{}
-func (s *SlicingDice) CountEvent(query map[string]interface{}) (map[string]interface{}, error) {
+func (s *SlicingDice) CountEvent(query interface{}) (map[string]interface{}, error) {
 	url := s.getFullUrl(COUNT_EVENT)
 	validate := hasValidCountQuery(query)
 	if validate != nil {

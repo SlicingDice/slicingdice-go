@@ -9,7 +9,7 @@ Official Go client for [SlicingDice](http://www.slicingdice.com/), Data Warehous
 
 If you are new to SlicingDice, check our [quickstart guide](http://panel.slicingdice.com/docs/#quickstart-guide) and learn to use it in 15 minutes.
 
-Please refer to the [SlicingDice official documentation](http://panel.slicingdice.com/docs/) for more information on [analytics databases](http://panel.slicingdice.com/docs/#analytics-concepts), [data modeling](http://panel.slicingdice.com/docs/#data-modeling), [indexing](http://panel.slicingdice.com/docs/#data-indexing), [querying](http://panel.slicingdice.com/docs/#data-querying), [limitations](http://panel.slicingdice.com/docs/#current-slicingdice-limitations) and [API details](http://panel.slicingdice.com/docs/#api-details).
+Please refer to the [SlicingDice official documentation](http://panel.slicingdice.com/docs/) for more information on [analytics databases](http://panel.slicingdice.com/docs/#analytics-concepts), [data modeling](http://panel.slicingdice.com/docs/#data-modeling), [data insertion](http://panel.slicingdice.com/docs/#data-insertion), [querying](http://panel.slicingdice.com/docs/#data-querying), [limitations](http://panel.slicingdice.com/docs/#current-slicingdice-limitations) and [API details](http://panel.slicingdice.com/docs/#api-details).
 
 ## Tests and Examples
 
@@ -48,24 +48,25 @@ func main() {
     // If you need production end-point you can remove this
     client.Test = true
 
-    // Indexing data
-    index_data := map[string]interface{}{
+    // Inserting data
+    insert_data := map[string]interface{}{
         "user1@slicingdice.com": map[string]int{
             "age": 22,
         },
-        "auto-create-fields": true,
+        "auto-create": []string{"table", "column"},
     }
-    client.Index(index_data)
+    client.Insert(insert_data)
 
     // Querying data
     query_data := map[string]interface{}{
-        "users-between-20-and-40": []map[string]interface{} {
-            map[string]interface{}{
-                "age": map[string][]int{
-                    "range": []int{20, 40},
+            "query-name": "users-between-20-and-40",
+            "query": []map[string]interface{} {
+                map[string]interface{}{
+                    "age": map[string][]int{
+                        "range": []int{20, 40},
+                    },
                 },
             },
-        },
     }
 
     result, _ := client.CountEntity(query_data)
@@ -88,8 +89,8 @@ func main() {
 * `key (APIKey)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API.
 * `timeout (int)` - Amount of time, in seconds, to wait for results for each request.
 
-### `GetProjects()`
-Get all created projects, both active and inactive ones. This method corresponds to a [GET request at /project](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-project). **IMPORTANT:** You can't make this request on tests end-point
+### `GetDatabase()`
+Get information about the current SlicingDice database. This method corresponds to a [GET request at /database](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-database). **IMPORTANT:** You can't make this request on tests end-point
 
 #### Request example
 
@@ -105,7 +106,7 @@ func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_API_KEY"
     client := slicingdice.New(keys, 60)
-    fmt.Println(client.GetProjects())
+    fmt.Println(client.GetDatabase())
 }
 ```
 
@@ -113,27 +114,15 @@ func main() {
 
 ```json
 {
-    "active": [
-        {
-            "name": "Project 1",
-            "description": "My first project",
-            "data-expiration": 30,
-            "created-at": "2016-04-05T10:20:30Z"
-        }
-    ],
-    "inactive": [
-        {
-            "name": "Project 2",
-            "description": "My second project",
-            "data-expiration": 90,
-            "created-at": "2016-04-05T10:20:30Z"
-        }
-    ]
+    "name": "Database 1",
+    "description": "My first database",
+    "data-expiration": 30,
+    "created-at": "2016-04-05T10:20:30Z"
 }
 ```
 
-### `GetFields()`
-Get all created fields, both active and inactive ones. This method corresponds to a [GET request at /field](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-field).
+### `GetColumns()`
+Get all created columns, both active and inactive ones. This method corresponds to a [GET request at /column](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-column).
 
 #### Request example
 
@@ -151,7 +140,7 @@ func main() {
     client := slicingdice.New(keys, 60)
     // If you need production end-point you can remove this
     client.Test = true
-    fmt.Println(client.GetFields())
+    fmt.Println(client.GetColumns())
 }
 ```
 
@@ -183,8 +172,8 @@ func main() {
 }
 ```
 
-### `CreateField(query interface{})`
-Create a new field. This method corresponds to a [POST request at /field](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-field).
+### `CreateColumn(query interface{})`
+Create a new column. This method corresponds to a [POST request at /column](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-column).
 
 #### Request example
 
@@ -204,14 +193,14 @@ func main() {
     // If you need production end-point you can remove this
     client.Test = true
 
-    fieldData := map[string]interface{}{
+    columnData := map[string]interface{}{
         "name":        "Year",
         "type":        "integer",
         "description": "Year of manufacturing",
         "storage":     "latest-value",
     }
 
-    fmt.Println(client.CreateField(fieldData))
+    fmt.Println(client.CreateColumn(columnData))
 }
 ```
 
@@ -224,8 +213,8 @@ func main() {
 }
 ```
 
-### `Index(query interface{})`
-Index data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /index](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-index).
+### `Insert(query interface{})`
+Insert data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /insert](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-insert).
 
 #### Request example
 
@@ -245,7 +234,7 @@ func main() {
     // If you need production end-point you can remove this
     client.Test = true
 
-    indexData := map[string]interface{}{
+    insertData := map[string]interface{}{
         "user1@slicingdice.com": map[string]interface{}{
             "car-model": "Ford Ka",
             "year":      2016,
@@ -282,9 +271,9 @@ func main() {
                 },
             },
         },
-        "auto-create-fields": true,
+        "auto-create": []string{"table", "column"},
     }
-    fmt.Println(client.Index(indexData))
+    fmt.Println(client.Insert(insertData))
 }
 ```
 
@@ -293,14 +282,14 @@ func main() {
 ```json
 {
     "status": "success",
-    "indexed-entities": 4,
-    "indexed-fields": 10,
+    "inserted-entities": 4,
+    "inserted-columns": 10,
     "took": 0.023
 }
 ```
 
 ### `ExistsEntity(ids)`
-Verify which entities exist in a project given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
+Verify which entities exist in a database given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
 
 #### Request example
 
@@ -348,7 +337,7 @@ func main() {
 ```
 
 ### `CountEntityTotal()`
-Count the number of indexed entities. This method corresponds to a [GET request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
+Count the number of inserted entities. This method corresponds to a [GET request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
 
 #### Request example
 
@@ -405,28 +394,35 @@ func main() {
     // If you need production end-point you can remove this
     client.Test = true
 
-    query := map[string]interface{}{
-        "corolla-or-fit": []interface{}{
-            map[string]interface{}{
-                "car-model": map[string]string{
-                    "equals": "toyota corolla",
+    query := []interface{}{
+        map[string]interface{}{
+            "query-name": "corolla-or-fit",
+            "query": []interface{}{
+                map[string]interface{}{
+                    "car-model": map[string]string{
+                        "equals": "toyota corolla",
+                    },
+                },
+                "or",
+                map[string]interface{}{
+                    "car-model": map[string]string{
+                        "equals": "honda fit",
+                    },
                 },
             },
-            "or",
-            map[string]interface{}{
-                "car-model": map[string]string{
-                    "equals": "honda fit",
-                },
-            },
+            "bypass-cache": false,
         },
-        "ford-ka": []map[string]interface{}{
-            map[string]interface{}{
-                "car-model": map[string]string{
-                    "equals": "ford ka",
+        map[string]interface{}{
+            "query-name": "ford-ka",
+            "query": []map[string]interface{}{
+                map[string]interface{}{
+                    "car-model": map[string]string{
+                        "equals": "ford ka",
+                    },
                 },
             },
+            "bypass-cache": false,
         },
-        "bypass-cache": false,
     }
 
     fmt.Println(client.CountEntity(query))
@@ -467,30 +463,37 @@ func main() {
     // If you need production end-point you can remove this
     client.Test = true
 
-    query := map[string]interface{}{
-        "test-drives-in-ny": []map[string]interface{}{
-            map[string]interface{}{
-                "test-drives": map[string]interface{}{
-                    "equals": "NY",
-                    "between": []string{
-                        "2016-08-16T00:00:00Z",
-                        "2016-08-18T00:00:00Z",
+    query := []interface{}{
+        map[string]interface{}{
+            "query-name": "test-drives-in-ny",
+            "query": []map[string]interface{}{
+                map[string]interface{}{
+                    "test-drives": map[string]interface{}{
+                        "equals": "NY",
+                        "between": []string{
+                            "2016-08-16T00:00:00Z",
+                            "2016-08-18T00:00:00Z",
+                        },
                     },
                 },
             },
+            "bypass-cache": true,
         },
-        "test-drives-in-ca": []map[string]interface{}{
-            map[string]interface{}{
-                "test-drives": map[string]interface{}{
-                    "equals": "CA",
-                    "between": []string{
-                        "2016-04-04T00:00:00Z",
-                        "2016-04-06T00:00:00Z",
+        map[string]interface{}{
+            "query-name": "test-drives-in-ca",
+            "query": []map[string]interface{}{
+                map[string]interface{}{
+                    "test-drives": map[string]interface{}{
+                        "equals": "CA",
+                        "between": []string{
+                            "2016-04-04T00:00:00Z",
+                            "2016-04-06T00:00:00Z",
+                        },
                     },
                 },
             },
+            "bypass-cache": true,
         },
-        "bypass-cache": true,
     }
     fmt.Println(client.CountEvent(query))
 }
@@ -583,7 +586,7 @@ func main() {
 ```
 
 ### `Aggregation(query interface{})`
-Return the aggregation of all fields in the given query. This method corresponds to a [POST request at /query/aggregation](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-aggregation).
+Return the aggregation of all columns in the given query. This method corresponds to a [POST request at /query/aggregation](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-aggregation).
 
 #### Request example
 
@@ -936,7 +939,7 @@ func main() {
 ```
 
 ### `Result(query interface{})`
-Retrieve indexed values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
+Retrieve inserted values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
 
 #### Request example
 
@@ -970,7 +973,7 @@ func main() {
                 },
             },
         },
-        "fields":     []string{"car-model", "year"},
+        "columns":    []string{"car-model", "year"},
         "limit":      2,
     }
 
@@ -1000,7 +1003,7 @@ func main() {
 ```
 
 ### `Score(query interface{})`
-Retrieve indexed values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
+Retrieve inserted values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
 
 #### Request example
 
@@ -1034,7 +1037,7 @@ func main() {
                 },
             },
         },
-        "fields":     []string{"car-model", "year"},
+        "columns":    []string{"car-model", "year"},
         "limit":      2,
     }
 
