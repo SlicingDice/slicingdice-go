@@ -337,7 +337,7 @@ func main() {
 ```
 
 ### `CountEntityTotal()`
-Count the number of inserted entities. This method corresponds to a [GET request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
+Count the number of inserted entities. This method corresponds to a [POST request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
 
 #### Request example
 
@@ -356,8 +356,13 @@ func main() {
 
     // If you need production end-point you can remove this
     client.Test = true
+    tables := map[string]interface{}{
+		"tables": [1]string{
+			"default",
+		},
+	}
 
-    fmt.Println(client.CountEntityTotal())
+	fmt.Println(client.CountEntityTotal(tables))
 }
 ```
 
