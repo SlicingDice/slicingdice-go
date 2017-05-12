@@ -411,11 +411,13 @@ func (s *SlicingDice) CountEntity(query interface{}) (map[string]interface{}, er
 
 // CountEntityTotal get total of entity query
 // It returns a JSON converted in map[string]interface{}
-func (s *SlicingDice) CountEntityTotal(data ...map[string]interface{}) (map[string]interface{}, error) {
+func (s *SlicingDice) CountEntityTotal(data ...[]string) (map[string]interface{}, error) {
 	tables := make(map[string]interface{})
 
 	if (len(data) != 0) {
-		tables = data[0]
+		tables = map[string]interface{}{
+			"tables": data[0],
+		}
 	}
 
 	url := s.getFullUrl(COUNT_ENTITY_TOTAL)
