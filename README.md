@@ -337,7 +337,7 @@ func main() {
 ```
 
 ### `CountEntityTotal()`
-Count the number of inserted entities. This method corresponds to a [GET request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
+Count the number of inserted entities in the whole database. This method corresponds to a [POST request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
 
 #### Request example
 
@@ -358,6 +358,44 @@ func main() {
     client.Test = true
 
     fmt.Println(client.CountEntityTotal())
+}
+```
+
+#### Output example
+
+```json
+{
+    "status": "success",
+    "result": {
+        "total": 42
+    },
+    "took": 0.103
+}
+```
+
+### `CountEntityTotal(data []string)`
+Count the total number of inserted entities in the given tables. This method corresponds to a [POST request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
+
+#### Request example
+
+```go
+package main
+
+import (
+    "fmt"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
+)
+
+func main() {
+    keys := new(slicingdice.APIKey)
+    keys.MasterKey = "MASTER_OR_READ_API_KEY"
+    client := slicingdice.New(keys, 60)
+
+    // If you need production end-point you can remove this
+    client.Test = true
+    tables := []string{"default", }
+
+    fmt.Println(client.CountEntityTotal(tables))
 }
 ```
 
