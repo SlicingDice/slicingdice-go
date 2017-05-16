@@ -288,8 +288,8 @@ func main() {
 }
 ```
 
-### `ExistsEntity(ids)`
-Verify which entities exist in a database given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
+### `ExistsEntity(ids, table)`
+Verify which entities exist in a table (uses `default` table if not provided) given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
 
 #### Request example
 
@@ -315,7 +315,7 @@ func main() {
         "user3@slicingdice.com",
         "otheruser@slicingdice.com",
     }
-    fmt.Println(client.ExistsEntity(entities))
+    fmt.Println(client.ExistsEntity(entities, ""))
 }
 ```
 
