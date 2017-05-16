@@ -477,10 +477,13 @@ func (s *SlicingDice) TopValues(query map[string]interface{}) (map[string]interf
 
 // ExistsEntity makes a exists entity query
 // It returns a JSON converted in map[string]interface{}
-func (s *SlicingDice) ExistsEntity(ids []string) (map[string]interface{}, error) {
+func (s *SlicingDice) ExistsEntity(ids []string, table string) (map[string]interface{}, error) {
 	url := s.getFullUrl(EXISTS_ENTITY)
 	query := make(map[string]interface{})
 	query["ids"] = ids
+	if table != "" {
+		query["table"] = table
+	}
 	return s.makeRequest(url, "POST", 0, query)
 }
 
