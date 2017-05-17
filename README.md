@@ -1,4 +1,4 @@
-# SlicingDice Official Go Client (v1.0)
+# SlicingDice Official Go Client (v2.0.0)
 ### Build Status: [![CircleCI](https://circleci.com/gh/SlicingDice/slicingdice-go.svg?style=svg)](https://circleci.com/gh/SlicingDice/slicingdice-go)
 
 Official Go client for [SlicingDice](http://www.slicingdice.com/), Data Warehouse and Analytics Database as a Service.  

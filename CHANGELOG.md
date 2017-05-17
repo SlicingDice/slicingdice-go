@@ -1,8 +1,10 @@
 # Change Log
 
-## Unreleased
+## [2.0.0]
 ### Updated
 - Update `ExistsEntity()` to receive `table` as parameter
+- Update API errors code
+- Rename SlicingDice API endpoints
 
 ## [1.0.0]
 ### Added
