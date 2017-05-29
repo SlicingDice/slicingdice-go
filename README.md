@@ -7,9 +7,9 @@ Official Go client for [SlicingDice](http://www.slicingdice.com/), Data Warehous
 
 ## Documentation
 
-If you are new to SlicingDice, check our [quickstart guide](http://panel.slicingdice.com/docs/#quickstart-guide) and learn to use it in 15 minutes.
+If you are new to SlicingDice, check our [quickstart guide](https://docs.slicingdice.com/docs/quickstart-guide) and learn to use it in 15 minutes.
 
-Please refer to the [SlicingDice official documentation](http://panel.slicingdice.com/docs/) for more information on [analytics databases](http://panel.slicingdice.com/docs/#analytics-concepts), [data modeling](http://panel.slicingdice.com/docs/#data-modeling), [data insertion](http://panel.slicingdice.com/docs/#data-insertion), [querying](http://panel.slicingdice.com/docs/#data-querying), [limitations](http://panel.slicingdice.com/docs/#current-slicingdice-limitations) and [API details](http://panel.slicingdice.com/docs/#api-details).
+Please refer to the [SlicingDice official documentation](https://docs.slicingdice.com/) for more information on [how to create a database](https://docs.slicingdice.com/docs/how-to-create-a-database), [how to insert data](https://docs.slicingdice.com/docs/how-to-insert-data), [how to make queries](https://docs.slicingdice.com/docs/how-to-make-queries), [how to create columns](https://docs.slicingdice.com/docs/how-to-create-columns), [SlicingDice restrictions](https://docs.slicingdice.com/docs/current-restrictions) and [API details](https://docs.slicingdice.com/docs/api-details).
 
 ## Tests and Examples
 
@@ -27,7 +27,7 @@ go get github.com/SlicingDice/slicingdice-go/slicingdice
 
 The following code snippet is an example of how to add and query data
 using the SlicingDice GO client. We entry data informing
-'user1@slicingdice.com' has age 22 and then query the database for
+`user1@slicingdice.com` has age 22 and then query the database for
 the number of entities with age between 20 and 40 years old.
 If this is the first record ever entered into the system,
  the answer should be 1.
@@ -76,21 +76,22 @@ func main() {
 
 ## Reference
 
-`SlicingDice` encapsulates logic for sending requests to the API. Its methods are thin layers around the [API endpoints](http://panel.slicingdice.com/docs/#api-details-api-endpoints), so their parameters and return values are JSON-like `interface{}` objects with the same syntax as the [API endpoints](http://panel.slicingdice.com/docs/#api-details-api-endpoints)
+`SlicingDice` encapsulates logic for sending requests to the API. Its methods are thin layers around the [API endpoints](https://docs.slicingdice.com/docs/api-details), so their parameters and return values are JSON-like `interface{}` objects with the same syntax as the [API endpoints](https://docs.slicingdice.com/docs/api-details)
 
 ### Attributes
 
-* `key (map[string]string)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API.
+* `key (map[string]string)` - [API key](https://docs.slicingdice.com/docs/api-keys) to authenticate requests with the SlicingDice API.
 * `timeout (int)` - Amount of time, in seconds, to wait for results for each request.
 
 ### Constructors
 
 `New(key *APIKey, timeout int) *SlicingDice`
-* `key (APIKey)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API.
+* `key (APIKey)` - [API key](https://docs.slicingdice.com/docs/api-keys) to authenticate requests with the SlicingDice API.
 * `timeout (int)` - Amount of time, in seconds, to wait for results for each request.
 
 ### `GetDatabase()`
-Get information about the current SlicingDice database. This method corresponds to a [GET request at /database](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-database). **IMPORTANT:** You can't make this request on tests end-point
+Get information about the current SlicingDice database. This method corresponds to a `GET` request at `/database`.  
+**IMPORTANT:** You can't make this request on `/test` end-point.
 
 #### Request example
 
@@ -122,7 +123,7 @@ func main() {
 ```
 
 ### `GetColumns()`
-Get all created columns, both active and inactive ones. This method corresponds to a [GET request at /column](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-column).
+Get all created columns, both active and inactive ones. This method corresponds to a [GET request at /column](https://docs.slicingdice.com/docs/how-to-list-edit-or-delete-columns).
 
 #### Request example
 
@@ -173,7 +174,7 @@ func main() {
 ```
 
 ### `CreateColumn(query interface{})`
-Create a new column. This method corresponds to a [POST request at /column](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-column).
+Create a new column. This method corresponds to a [POST request at /column](https://docs.slicingdice.com/docs/how-to-create-columns#section-creating-columns-using-column-endpoint).
 
 #### Request example
 
@@ -214,7 +215,7 @@ func main() {
 ```
 
 ### `Insert(query interface{})`
-Insert data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /insert](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-insert).
+Insert data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /insert](https://docs.slicingdice.com/docs/how-to-insert-data).
 
 #### Request example
 
@@ -289,7 +290,7 @@ func main() {
 ```
 
 ### `ExistsEntity(ids, table)`
-Verify which entities exist in a table (uses `default` table if not provided) given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
+Verify which entities exist in a table (uses `default` table if not provided) given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](https://docs.slicingdice.com/docs/exists).
 
 #### Request example
 
@@ -337,7 +338,7 @@ func main() {
 ```
 
 ### `CountEntityTotal()`
-Count the number of inserted entities in the whole database. This method corresponds to a [POST request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
+Count the number of inserted entities in the whole database. This method corresponds to a [POST request at /query/count/entity/total](https://docs.slicingdice.com/docs/total).
 
 #### Request example
 
@@ -374,7 +375,7 @@ func main() {
 ```
 
 ### `CountEntityTotal(data []string)`
-Count the total number of inserted entities in the given tables. This method corresponds to a [POST request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
+Count the total number of inserted entities in the given tables. This method corresponds to a [POST request at /query/count/entity/total](https://docs.slicingdice.com/docs/total#section-counting-specific-tables).
 
 #### Request example
 
@@ -412,7 +413,7 @@ func main() {
 ```
 
 ### `CountEntity(query interface{})`
-Count the number of entities matching the given query. This method corresponds to a [POST request at /query/count/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-entity).
+Count the number of entities matching the given query. This method corresponds to a [POST request at /query/count/entity](https://docs.slicingdice.com/docs/count-entities).
 
 #### Request example
 
@@ -481,7 +482,7 @@ func main() {
 ```
 
 ### `CountEvent(query interface{})`
-Count the number of occurrences for time-series events matching the given query. This method corresponds to a [POST request at /query/count/event](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-event).
+Count the number of occurrences for time-series events matching the given query. This method corresponds to a [POST request at /query/count/event](https://docs.slicingdice.com/docs/count-events).
 
 #### Request example
 
@@ -551,7 +552,7 @@ func main() {
 ```
 
 ### `TopValues(query interface{})`
-Return the top values for entities matching the given query. This method corresponds to a [POST request at /query/top_values](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-top-values).
+Return the top values for entities matching the given query. This method corresponds to a [POST request at /query/top_values](https://docs.slicingdice.com/docs/top-values).
 
 #### Request example
 
@@ -624,7 +625,7 @@ func main() {
 ```
 
 ### `Aggregation(query interface{})`
-Return the aggregation of all columns in the given query. This method corresponds to a [POST request at /query/aggregation](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-aggregation).
+Return the aggregation of all columns in the given query. This method corresponds to a [POST request at /query/aggregation](https://docs.slicingdice.com/docs/aggregations).
 
 #### Request example
 
@@ -687,7 +688,7 @@ func main() {
 ```
 
 ### `GetSavedQueries()`
-Get all saved queries. This method corresponds to a [GET request at /query/saved](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-saved).
+Get all saved queries. This method corresponds to a [GET request at /query/saved](https://docs.slicingdice.com/docs/saved-queries).
 
 #### Request example
 
@@ -741,7 +742,7 @@ func main() {
 ```
 
 ### `CreateSavedQuery(query interface{})`
-Create a saved query at SlicingDice. This method corresponds to a [POST request at /query/saved](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-saved).
+Create a saved query at SlicingDice. This method corresponds to a [POST request at /query/saved](https://docs.slicingdice.com/docs/saved-queries).
 
 #### Request example
 
@@ -808,7 +809,7 @@ func main() {
 ```
 
 ### `UpdateSavedQuery(string queryName, query interface{})`
-Update an existing saved query at SlicingDice. This method corresponds to a [PUT request at /query/saved/QUERY_NAME](http://panel.slicingdice.com/docs/#api-details-api-endpoints-put-query-saved-query-name).
+Update an existing saved query at SlicingDice. This method corresponds to a [PUT request at /query/saved/QUERY_NAME](https://docs.slicingdice.com/docs/saved-queries).
 
 #### Request example
 
@@ -876,7 +877,7 @@ func main() {
 ```
 
 ### `GetSavedQuery(string queryName)`
-Executed a saved query at SlicingDice. This method corresponds to a [GET request at /query/saved/QUERY_NAME](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-saved-query-name).
+Executed a saved query at SlicingDice. This method corresponds to a [GET request at /query/saved/QUERY_NAME](https://docs.slicingdice.com/docs/saved-queries).
 
 #### Request example
 
@@ -927,7 +928,7 @@ func main() {
 ```
 
 ### `DeleteSavedQuery(string queryName)`
-Delete a saved query at SlicingDice. This method corresponds to a [DELETE request at /query/saved/QUERY_NAME](http://panel.slicingdice.com/docs/#api-details-api-endpoints-delete-query-saved-query-name).
+Delete a saved query at SlicingDice. This method corresponds to a [DELETE request at /query/saved/QUERY_NAME](https://docs.slicingdice.com/docs/saved-queries).
 
 #### Request example
 
@@ -977,7 +978,7 @@ func main() {
 ```
 
 ### `Result(query interface{})`
-Retrieve inserted values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
+Retrieve inserted values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](https://docs.slicingdice.com/docs/result-extraction).
 
 #### Request example
 
@@ -1041,7 +1042,7 @@ func main() {
 ```
 
 ### `Score(query interface{})`
-Retrieve inserted values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
+Retrieve inserted values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](https://docs.slicingdice.com/docs/score-extraction).
 
 #### Request example
 
