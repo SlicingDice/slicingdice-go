@@ -35,14 +35,13 @@ func (s *SlicingDiceTester) runTests(queryType string) {
 	s.perTestInsert = singleInsert["insert"] != nil
 
 	if !s.perTestInsert {
-		fmt.Printf("SQL")
-		// insertData := s.loadTestData(queryType, "_insert").([]interface{})
-		// for _, sInsert := range insertData {
-		// 	insert := sInsert.(map[string]interface{})
-		// 	s.client.Insert(insert)
-		// }
+		insertData := s.loadTestData(queryType, "_insert").([]interface{})
+		for _, sInsert := range insertData {
+			insert := sInsert.(map[string]interface{})
+			s.client.Insert(insert)
+		}
 
-		// time.Sleep(time.Duration(s.sleepTime) * time.Second)
+		time.Sleep(time.Duration(s.sleepTime) * time.Second)
 	}
 
 	for i, test := range testData {
@@ -114,12 +113,12 @@ This technique allows the same test suite to be executed over and over
 again, since each execution will use different column names.
 */
 func (s *SlicingDiceTester) appendTimestampToColumnName(column map[string]interface{}) map[string]interface{} {
-	oldName := fmt.Sprintf("\"%v\"", column["api-name"])
+	oldName := fmt.Sprintf("\"%v", column["api-name"])
 
 	timestamp := s.getTimestamp()
 	column["name"] = column["name"].(string) + timestamp
 	column["api-name"] = column["api-name"].(string) + timestamp
-	newName := fmt.Sprintf("\"%v\"", column["api-name"])
+	newName := fmt.Sprintf("\"%v", column["api-name"])
 
 	s.columnTranslation[oldName] = newName
 	return column
@@ -311,15 +310,28 @@ func (s *SlicingDiceTester) compareJSONValue(expected interface{}, got interface
 		return s.compareJSONArray(expectedArray, gotArray)
 	} else {
 		expected_type := reflect.TypeOf(expected)
-		if k := expected_type.Kind(); k == reflect.Int {
+		expected_kind := expected_type.Kind()
+		if expected_kind == reflect.Int && s.isJsonNumber(got) {
+			fmt.Print(got)
 			f, _ := got.(json.Number).Int64()
 			return expected == f
-		} else if k == reflect.Float64 {
+		} else if expected_kind == reflect.Float64 && s.isJsonNumber(got) {
+			fmt.Print(expected)
+			fmt.Print(got)
 			f, _ := got.(json.Number).Float64()
 			return expected == f
 		} else {
 			return reflect.DeepEqual(expected, got)
 		}
+	}
+}
+
+func (s *SlicingDiceTester) isJsonNumber(to_test interface{}) bool {
+	switch to_test.(type) {
+	case json.Number:
+		return true
+	default:
+		return false
 	}
 }
 
