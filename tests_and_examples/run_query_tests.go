@@ -23,12 +23,26 @@ type SlicingDiceTester struct {
 	numFails         int
 	failedTests      []string
 	verbose          bool
+	perTestInsert	 bool
 }
 
 // Run all the tests of determined query type
 func (s *SlicingDiceTester) runTests(queryType string) {
-	testData := s.loadTestData(queryType).([]interface{})
+	testData := s.loadTestData(queryType, "").([]interface{})
 	numTests := len(testData)
+
+	singleInsert := testData[0].(map[string]interface{})
+	s.perTestInsert = singleInsert["insert"] != nil
+
+	if !s.perTestInsert {
+		insertData := s.loadTestData(queryType, "_insert").([]interface{})
+		for _, sInsert := range insertData {
+			insert := sInsert.(map[string]interface{})
+			s.client.Insert(insert)
+		}
+
+		time.Sleep(time.Duration(s.sleepTime) * time.Second)
+	}
 
 	for i, test := range testData {
 		var err error
@@ -43,15 +57,17 @@ func (s *SlicingDiceTester) runTests(queryType string) {
 		}
 
 		fmt.Printf("  Query type: %v\n", queryType)
-		err = s.createColumns(testConverted)
-		if err != nil {
-			s.compareResult(testConverted, nil, err)
-			continue
-		}
-		err = s.insertData(testConverted)
-		if err != nil {
-			s.compareResult(testConverted, nil, err)
-			continue
+		if s.perTestInsert {
+			err = s.createColumns(testConverted)
+			if err != nil {
+				s.compareResult(testConverted, nil, err)
+				continue
+			}
+			err = s.insertData(testConverted)
+			if err != nil {
+				s.compareResult(testConverted, nil, err)
+				continue
+			}	
 		}
 		result, err = s.executeQuery(queryType, testConverted)
 		if err != nil {
@@ -97,12 +113,12 @@ This technique allows the same test suite to be executed over and over
 again, since each execution will use different column names.
 */
 func (s *SlicingDiceTester) appendTimestampToColumnName(column map[string]interface{}) map[string]interface{} {
-	oldName := fmt.Sprintf("\"%v\"", column["api-name"])
+	oldName := fmt.Sprintf("\"%v", column["api-name"])
 
 	timestamp := s.getTimestamp()
 	column["name"] = column["name"].(string) + timestamp
 	column["api-name"] = column["api-name"].(string) + timestamp
-	newName := fmt.Sprintf("\"%v\"", column["api-name"])
+	newName := fmt.Sprintf("\"%v", column["api-name"])
 
 	s.columnTranslation[oldName] = newName
 	return column
@@ -170,6 +186,16 @@ func (s *SlicingDiceTester) translateColumnNames(jsonData map[string]interface{}
 func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]interface{}) (map[string]interface{}, error) {
 	var result interface{}
 	var err error
+
+	if queryType == "sql" {
+		result, err = s.client.Sql(test["query"].(string))
+
+		if result == nil {
+			return nil, err
+		}
+		return result.(map[string]interface{}), err
+	}
+
 	query := test["query"].(map[string]interface{})
 	queryDataTranslated := s.translateColumnNames(query, true)
 
@@ -190,7 +216,7 @@ func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]inter
 		result, err = s.client.Result(queryDataTranslated)
 	} else if queryType == "score" {
 		result, err = s.client.Score(queryDataTranslated)
-	}
+	} 
 	if result == nil {
 		return nil, err
 	}
@@ -199,7 +225,10 @@ func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]inter
 
 // Compare and assert result received from Slicing Dice API
 func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result map[string]interface{}, err error) {
-	expected := s.translateColumnNames(test["expected"].(map[string]interface{}), false)
+	expected := test["expected"].(map[string]interface{})
+	if s.perTestInsert {
+		expected = s.translateColumnNames(test["expected"].(map[string]interface{}), false)
+	}
 	if err != nil {
 		s.numFails += 1
 		s.failedTests = append(s.failedTests, test["name"].(string))
@@ -254,11 +283,15 @@ func (s *SlicingDiceTester) compareJSONArray(expected []interface{}, got []inter
 		return false
 	}
 
-	for i, value := range expected {
-		valueExpected := value
-		valueGot := got[i]
+	for _, valueExpected := range expected {
+		hasEqual := false
+		for _, valueGot := range got {
+			if s.compareJSONValue(valueExpected, valueGot) {
+				hasEqual = true
+			}
+		}
 
-		if !s.compareJSONValue(valueExpected, valueGot) {
+		if !hasEqual {
 			return false
 		}
 	}
@@ -276,13 +309,35 @@ func (s *SlicingDiceTester) compareJSONValue(expected interface{}, got interface
 		gotArray := got.([]interface{})
 		return s.compareJSONArray(expectedArray, gotArray)
 	} else {
-		return reflect.DeepEqual(expected, got)
+		expected_type := reflect.TypeOf(expected)
+		expected_kind := expected_type.Kind()
+		if expected_kind == reflect.Int && s.isJsonNumber(got) {
+			fmt.Print(got)
+			f, _ := got.(json.Number).Int64()
+			return expected == f
+		} else if expected_kind == reflect.Float64 && s.isJsonNumber(got) {
+			fmt.Print(expected)
+			fmt.Print(got)
+			f, _ := got.(json.Number).Float64()
+			return expected == f
+		} else {
+			return reflect.DeepEqual(expected, got)
+		}
+	}
+}
+
+func (s *SlicingDiceTester) isJsonNumber(to_test interface{}) bool {
+	switch to_test.(type) {
+	case json.Number:
+		return true
+	default:
+		return false
 	}
 }
 
 // Load test data from examples folder
-func (s *SlicingDiceTester) loadTestData(queryType string) interface{} {
-	filename := s.path + queryType + s.extension
+func (s *SlicingDiceTester) loadTestData(queryType string, suffix string) interface{} {
+	filename := s.path + queryType + suffix + s.extension
 	file, err := ioutil.ReadFile(filename)
 	if err != nil {
 		log.Fatal(err)
@@ -306,11 +361,10 @@ func newSlicingDiceTester(apiKey string, verboseOption bool) (t *SlicingDiceTest
 	keys.MasterKey = apiKey
 	sdTester := new(SlicingDiceTester)
 	sdTester.client = slicingdice.New(keys, 60)
-	sdTester.client.Test = true
 	sdTester.verbose = verboseOption
 
 	// Sleep Time in seconds
-	sdTester.sleepTime = 10
+	sdTester.sleepTime = 5
 	// Path for examples
 	sdTester.path = "examples/"
 	// Examples files extension
@@ -350,19 +404,20 @@ func printResults(sdTester *SlicingDiceTester) {
 
 func main() {
 	// SlicingDice queries to be tested. Must match the JSON file name.
-	var queryTypes = [6]string{
+	var queryTypes = [7]string{
 		"count_entity",
 		"count_event",
 		"top_values",
 		"aggregation",
 		"result",
 		"score",
+		"sql",
 	}
 
 	// Testing class with demo API key
 	// You can get a new demo API key here: http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
 	sdTester := newSlicingDiceTester(
-		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vNzRtIiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6MjM1LCJjbGllbnRfaWQiOjEwfQ.f9yLh6M82NX06r3TemFLmZ2U-tadBqgKF2EuONZrOK0",
+		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiIxNTE4NjA3ODQ0NDAzIiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6NDY5NjYsImNsaWVudF9pZCI6OTUxfQ.S6LCWQDcLS1DEFy3lsqk2jTGIe5rJ5fsQIvWuuFBdkw",
 		false,
 	)
 
