@@ -32,6 +32,7 @@ const (
 	COUNT_EVENT        = "/query/count/event/"
 	AGGREGATION        = "/query/aggregation/"
 	SAVED              = "/query/saved/"
+	SQL				   = "/query/sql/"
 )
 
 /* APIKey is used to access the keys that we insert in the SlicingDice API.
@@ -141,7 +142,7 @@ func validateColumn(query map[string]interface{}) error {
 	validTypeColumns := []string{
 		"unique-id", "boolean", "string", "integer", "decimal",
 		"enumerated", "date", "integer-time-series",
-		"decimal-time-series", "string-time-series",
+		"decimal-time-series", "string-time-series", "datetime",
 	}
 	// validate name
 	if _, ok := query["name"]; !ok {
@@ -210,7 +211,6 @@ func New(key *APIKey, timeout int) *SlicingDice {
 		}
 	}
 	SlicingDice.timeout = timeout
-	SlicingDice.Test = false
 	return SlicingDice
 }
 
@@ -251,23 +251,18 @@ func (s *SlicingDice) getKey(keys map[string]string, endpointKeyLevel int) (stri
 // him define the url base how 'https://api.slicingdice.com/v1'.
 func (s *SlicingDice) getFullUrl(path string) string {
 	if len(sd_base) != 0 {
-		if s.Test {
-			return sd_base + "/test" + path
-		}
 		return sd_base + path
-	} else {
-		if s.Test {
-			return "https://api.slicingdice.com/v1/test" + path
-		}
-	}
+	} 
 	return "https://api.slicingdice.com/v1" + path
+}
+
+func (s *SlicingDice) makeRequest(url string, method string, endpointKeyLevel int, query interface{}) (map[string]interface{}, error) {
+	return s.makeRequestSQL(url, method, endpointKeyLevel, query, false)
 }
 
 // makeRequest checks request method, convert the query passed for use to JSON
 // and executes the request.
-func (s *SlicingDice) makeRequest(url string, method string, endpointKeyLevel int, query interface{}) (map[string]interface{}, error) {
-	queryData := new(bytes.Buffer)
-	json.NewEncoder(queryData).Encode(query)
+func (s *SlicingDice) makeRequestSQL(url string, method string, endpointKeyLevel int, query interface{}, sql bool) (map[string]interface{}, error) {
 	methodsAllowed := []string{"GET", "POST", "PUT", "DELETE"}
 	if !stringInSlice(method, methodsAllowed) {
 		return nil, errors.New("request: this is a invalid method to make request.")
@@ -284,9 +279,28 @@ func (s *SlicingDice) makeRequest(url string, method string, endpointKeyLevel in
 		Timeout:   timeout,
 		Transport: tr,
 	}
-	request, err := http.NewRequest(method, url, queryData)
+
+
+	var request *http.Request
+	var err_request error
+	var contentType string
+	if sql {
+		contentType = "application/sql"
+		queryData := []byte(query.(string))
+		request, err_request = http.NewRequest(method, url, bytes.NewBuffer(queryData))
+	} else {
+		contentType = "application/json"
+		queryData := new(bytes.Buffer)
+		json.NewEncoder(queryData).Encode(query)
+		request, err_request = http.NewRequest(method, url, queryData)
+	}
+
+	if err_request != nil {
+		return nil, err_request
+	}
+
 	request.Header.Add("Authorization", key)
-	request.Header.Add("Content-Type", "application/json")
+	request.Header.Add("Content-Type", contentType)
 	res, err := client.Do(request)
 	return s.handlerResponse(res, err)
 }
@@ -503,4 +517,9 @@ func (s *SlicingDice) CreateSavedQuery(query map[string]interface{}) (map[string
 func (s *SlicingDice) UpdateSavedQuery(queryName string, query map[string]interface{}) (map[string]interface{}, error) {
 	url := s.getFullUrl(SAVED + queryName)
 	return s.makeRequest(url, "PUT", 2, query)
+}
+
+func (s *SlicingDice) Sql(query string) (map[string]interface{}, error) {
+	url := s.getFullUrl(SQL)
+	return s.makeRequestSQL(url, "POST", 0, query, true)
 }
