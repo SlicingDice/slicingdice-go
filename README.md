@@ -45,15 +45,13 @@ func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "YOUR_API_KEY"
     client := slicingdice.New(keys, 60)
-    // If you need production end-point you can remove this
-    client.Test = true
 
     // Inserting data
     insert_data := map[string]interface{}{
         "user1@slicingdice.com": map[string]int{
             "age": 22,
         },
-        "auto-create": []string{"table", "column"},
+        "auto-create": []string{"dimension", "column"},
     }
     client.Insert(insert_data)
 
@@ -116,7 +114,7 @@ func main() {
 {
     "name": "Database 1",
     "description": "My first database",
-    "tables": [
+    "dimensions": [
     	"default",
         "users"
     ],
@@ -142,8 +140,7 @@ func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_API_KEY"
     client := slicingdice.New(keys, 60)
-    // If you need production end-point you can remove this
-    client.Test = true
+    
     fmt.Println(client.GetColumns())
 }
 ```
@@ -194,9 +191,6 @@ func main() {
     keys.MasterKey = "MASTER_API_KEY"
     client := slicingdice.New(keys, 60)
 
-    // If you need production end-point you can remove this
-    client.Test = true
-
     columnData := map[string]interface{}{
         "name":        "Year",
         "type":        "integer",
@@ -235,9 +229,6 @@ func main() {
     keys.MasterKey = "MASTER_API_KEY"
     client := slicingdice.New(keys, 60)
 
-    // If you need production end-point you can remove this
-    client.Test = true
-
     insertData := map[string]interface{}{
         "user1@slicingdice.com": map[string]interface{}{
             "car-model": "Ford Ka",
@@ -275,7 +266,7 @@ func main() {
                 },
             },
         },
-        "auto-create": []string{"table", "column"},
+        "auto-create": []string{"dimension", "column"},
     }
     fmt.Println(client.Insert(insertData))
 }
@@ -292,8 +283,8 @@ func main() {
 }
 ```
 
-### `ExistsEntity(ids, table)`
-Verify which entities exist in a table (uses `default` table if not provided) given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](https://docs.slicingdice.com/docs/exists).
+### `ExistsEntity(ids, dimension)`
+Verify which entities exist in a dimension (uses `default` dimension if not provided) given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](https://docs.slicingdice.com/docs/exists).
 
 #### Request example
 
@@ -309,9 +300,6 @@ func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
     client := slicingdice.New(keys, 60)
-
-    // If you need production end-point you can remove this
-    client.Test = true
 
     entities := []string{
         "user1@slicingdice.com",
@@ -358,9 +346,6 @@ func main() {
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
     client := slicingdice.New(keys, 60)
 
-    // If you need production end-point you can remove this
-    client.Test = true
-
     fmt.Println(client.CountEntityTotal())
 }
 ```
@@ -378,7 +363,7 @@ func main() {
 ```
 
 ### `CountEntityTotal(data []string)`
-Count the total number of inserted entities in the given tables. This method corresponds to a [POST request at /query/count/entity/total](https://docs.slicingdice.com/docs/total#section-counting-specific-tables).
+Count the total number of inserted entities in the given dimensions. This method corresponds to a [POST request at /query/count/entity/total](https://docs.slicingdice.com/docs/total#section-counting-specific-tables).
 
 #### Request example
 
@@ -395,11 +380,9 @@ func main() {
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
     client := slicingdice.New(keys, 60)
 
-    // If you need production end-point you can remove this
-    client.Test = true
-    tables := []string{"default", }
+    dimensions := []string{"default", }
 
-    fmt.Println(client.CountEntityTotal(tables))
+    fmt.Println(client.CountEntityTotal(dimensions))
 }
 ```
 
@@ -432,9 +415,6 @@ func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
     client := slicingdice.New(keys, 60)
-
-    // If you need production end-point you can remove this
-    client.Test = true
 
     query := []interface{}{
         map[string]interface{}{
@@ -502,9 +482,6 @@ func main() {
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
     client := slicingdice.New(keys, 60)
 
-    // If you need production end-point you can remove this
-    client.Test = true
-
     query := []interface{}{
         map[string]interface{}{
             "query-name": "test-drives-in-ny",
@@ -571,9 +548,6 @@ func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
     client := slicingdice.New(keys, 60)
-
-    // If you need production end-point you can remove this
-    client.Test = true
 
     query := map[string]interface{}{
         "car-year": map[string]interface{}{
@@ -645,9 +619,6 @@ func main() {
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
     client := slicingdice.New(keys, 60)
 
-    // If you need production end-point you can remove this
-    client.Test = true
-
     query := map[string]interface{}{
         "query": []map[string]interface{}{
             map[string]interface{}{
@@ -708,9 +679,6 @@ func main() {
     keys.MasterKey = "MASTER_API_KEY"
     client := slicingdice.New(keys, 60)
 
-    // If you need production end-point you can remove this
-    client.Test = true
-
     fmt.Println(client.GetSavedQueries())
 }
 ```
@@ -761,9 +729,6 @@ func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_API_KEY"
     client := slicingdice.New(keys, 60)
-
-    // If you need production end-point you can remove this
-    client.Test = true
 
     query := map[string]interface{}{
         "name": "my-saved-query",
@@ -830,9 +795,6 @@ func main() {
     keys.MasterKey = "MASTER_API_KEY"
     client := slicingdice.New(keys, 60)
 
-    // If you need production end-point you can remove this
-    client.Test = true
-
     query := map[string]interface{}{
         "type": "count/entity",
         "query": []interface{}{
@@ -897,9 +859,6 @@ func main() {
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
     client := slicingdice.New(keys, 60)
 
-    // If you need production end-point you can remove this
-    client.Test = true
-
     fmt.Println(client.GetSavedQuery("my-saved-query"))
 }
 ```
@@ -948,9 +907,6 @@ func main() {
     keys.MasterKey = "MASTER_API_KEY"
     client := slicingdice.New(keys, 60)
 
-    // If you need production end-point you can remove this
-    client.Test = true
-
     fmt.Println(client.DeleteSavedQuery("my-saved-query"))
 }
 ```
@@ -997,9 +953,6 @@ func main() {
     keys := new(slicingdice.APIKey)
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
     client := slicingdice.New(keys, 60)
-
-    // If you need production end-point you can remove this
-    client.Test = true
 
     query := map[string]interface{}{
         "query": []interface{}{
@@ -1062,9 +1015,6 @@ func main() {
     keys.MasterKey = "MASTER_OR_READ_API_KEY"
     client := slicingdice.New(keys, 60)
 
-    // If you need production end-point you can remove this
-    client.Test = true
-
     query := map[string]interface{}{
         "query": []interface{}{
             map[string]interface{}{
@@ -1107,6 +1057,43 @@ func main() {
    "page":1,
    "status":"success",
    "took":0.036
+}
+```
+
+### `Sql(query string)`
+Retrieve inserted values using a SQL syntax. This method corresponds to a POST request at /query/sql.
+
+#### Request example
+
+```go
+package main
+
+import (
+    "fmt"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
+)
+
+func main() {
+    keys := new(slicingdice.APIKey)
+    keys.MasterKey = "MASTER_OR_READ_API_KEY"
+    client := slicingdice.New(keys, 60)
+
+    query := "SELECT COUNT(*) FROM default WHERE age BETWEEN 0 AND 49"
+
+    fmt.Println(client.Sql(query))
+}
+```
+
+#### Output example
+
+```json
+{
+   "took":0.063,
+   "result":[
+       {"COUNT": 3}
+   ],
+   "count":1,
+   "status":"success"
 }
 ```
 
