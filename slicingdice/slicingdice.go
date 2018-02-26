@@ -426,16 +426,16 @@ func (s *SlicingDice) CountEntity(query interface{}) (map[string]interface{}, er
 // CountEntityTotal get total of entity query
 // It returns a JSON converted in map[string]interface{}
 func (s *SlicingDice) CountEntityTotal(data ...[]string) (map[string]interface{}, error) {
-	tables := make(map[string]interface{})
+	dimensions := make(map[string]interface{})
 
 	if (len(data) != 0) {
-		tables = map[string]interface{}{
-			"tables": data[0],
+		dimensions = map[string]interface{}{
+			"dimensions": data[0],
 		}
 	}
 
 	url := s.getFullUrl(COUNT_ENTITY_TOTAL)
-	return s.makeRequest(url, "POST", 0, tables)
+	return s.makeRequest(url, "POST", 0, dimensions)
 }
 
 // CountEvent makes a count event query
@@ -491,12 +491,12 @@ func (s *SlicingDice) TopValues(query map[string]interface{}) (map[string]interf
 
 // ExistsEntity makes a exists entity query
 // It returns a JSON converted in map[string]interface{}
-func (s *SlicingDice) ExistsEntity(ids []string, table string) (map[string]interface{}, error) {
+func (s *SlicingDice) ExistsEntity(ids []string, dimension string) (map[string]interface{}, error) {
 	url := s.getFullUrl(EXISTS_ENTITY)
 	query := make(map[string]interface{})
 	query["ids"] = ids
-	if table != "" {
-		query["table"] = table
+	if dimension != "" {
+		query["dimension"] = dimension
 	}
 	return s.makeRequest(url, "POST", 0, query)
 }
