@@ -1063,7 +1063,7 @@ func main() {
 ### `Sql(query string)`
 Retrieve inserted values using a SQL syntax. This method corresponds to a POST request at /query/sql.
 
-#### Request example
+#### Query statement
 
 ```go
 package main
@@ -1079,6 +1079,26 @@ func main() {
     client := slicingdice.New(keys, 60)
 
     query := "SELECT COUNT(*) FROM default WHERE age BETWEEN 0 AND 49"
+
+    fmt.Println(client.Sql(query))
+}
+```
+
+#### Insert statement
+```go
+package main
+
+import (
+    "fmt"
+    "github.com/SlicingDice/slicingdice-go/slicingdice"
+)
+
+func main() {
+    keys := new(slicingdice.APIKey)
+    keys.MasterKey = "MASTER_OR_READ_API_KEY"
+    client := slicingdice.New(keys, 60)
+
+    query := "INSERT INTO default([entity-id], name, age) VALUES(1, 'john', 10)"
 
     fmt.Println(client.Sql(query))
 }
