@@ -34,16 +34,6 @@ func (s *SlicingDiceTester) runTests(queryType string) {
 	singleInsert := testData[0].(map[string]interface{})
 	s.perTestInsert = singleInsert["insert"] != nil
 
-	if !s.perTestInsert {
-		insertData := s.loadTestData(queryType, "_insert").([]interface{})
-		for _, sInsert := range insertData {
-			insert := sInsert.(map[string]interface{})
-			s.client.Insert(insert)
-		}
-
-		time.Sleep(time.Duration(s.sleepTime) * time.Second)
-	}
-
 	for i, test := range testData {
 		var err error
 		var result map[string]interface{}
@@ -417,7 +407,7 @@ func main() {
 	// Testing class with demo API key
 	// You can get a new demo API key here: http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
 	sdTester := newSlicingDiceTester(
-		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMzM1OW0iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMzM1OSwiY2xpZW50X2lkIjoxMH0.xiRGXv-Rj8kQsPg6EtX_WjFBsmdzRMqISZ4xHSHS3ig",
+		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiIxNTIzMDY1ODQyNjU4IiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6MzA1MDgsImNsaWVudF9pZCI6MjAzfQ.R3oKwcA9XoQcW_QBxcvqUNJS44AqCKjoK2Hz5uBnxmU",
 		false,
 	)
 
