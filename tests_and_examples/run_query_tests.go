@@ -34,16 +34,6 @@ func (s *SlicingDiceTester) runTests(queryType string) {
 	singleInsert := testData[0].(map[string]interface{})
 	s.perTestInsert = singleInsert["insert"] != nil
 
-	if !s.perTestInsert {
-		insertData := s.loadTestData(queryType, "_insert").([]interface{})
-		for _, sInsert := range insertData {
-			insert := sInsert.(map[string]interface{})
-			s.client.Insert(insert)
-		}
-
-		time.Sleep(time.Duration(s.sleepTime) * time.Second)
-	}
-
 	for i, test := range testData {
 		var err error
 		var result map[string]interface{}
