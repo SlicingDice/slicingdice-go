@@ -407,7 +407,7 @@ func main() {
 	// Testing class with demo API key
 	// You can get a new demo API key here: http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
 	sdTester := newSlicingDiceTester(
-		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vNjIyNm0iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyNjIyNiwiY2xpZW50X2lkIjoxMH0.0jztFxFvfuo80zLKBwU9MB87439rKqDfpd4Y6aaui44",
+		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMTMzOG0iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMTMzOCwiY2xpZW50X2lkIjoxMH0.bMUl-VKH8Psjnkmchu0ixOhJti24REVsOCKlnpq6Wws",
 		false,
 	)
 
