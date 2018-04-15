@@ -354,7 +354,7 @@ func newSlicingDiceTester(apiKey string, verboseOption bool) (t *SlicingDiceTest
 	sdTester.verbose = verboseOption
 
 	// Sleep Time in seconds
-	sdTester.sleepTime = 5
+	sdTester.sleepTime = 10
 	// Path for examples
 	sdTester.path = "examples/"
 	// Examples files extension
