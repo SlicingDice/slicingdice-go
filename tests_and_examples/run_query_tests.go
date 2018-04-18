@@ -103,12 +103,12 @@ This technique allows the same test suite to be executed over and over
 again, since each execution will use different column names.
 */
 func (s *SlicingDiceTester) appendTimestampToColumnName(column map[string]interface{}) map[string]interface{} {
-	oldName := fmt.Sprintf("\"%v", column["api-name"])
+	oldName := fmt.Sprintf("\"%v\"", column["api-name"])
 
 	timestamp := s.getTimestamp()
 	column["name"] = column["name"].(string) + timestamp
 	column["api-name"] = column["api-name"].(string) + timestamp
-	newName := fmt.Sprintf("\"%v", column["api-name"])
+	newName := fmt.Sprintf("\"%v\"", column["api-name"])
 
 	s.columnTranslation[oldName] = newName
 	return column
