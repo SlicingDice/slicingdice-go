@@ -407,7 +407,7 @@ func main() {
 	apiKey, keySet := os.LookupEnv("SD_API_KEY")
 
 	if !keySet {
-		apiKey := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMTMzOG0iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMTMzOCwiY2xpZW50X2lkIjoxMH0.bMUl-VKH8Psjnkmchu0ixOhJti24REVsOCKlnpq6Wws"
+		apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMTMzOG0iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMTMzOCwiY2xpZW50X2lkIjoxMH0.bMUl-VKH8Psjnkmchu0ixOhJti24REVsOCKlnpq6Wws"
 	}
 
 	// Testing class with demo API key
