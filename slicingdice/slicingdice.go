@@ -32,7 +32,7 @@ const (
 	COUNT_EVENT        = "/query/count/event/"
 	AGGREGATION        = "/query/aggregation/"
 	SAVED              = "/query/saved/"
-	SQL				   = "/query/sql/"
+	SQL				   = "/sql/"
 )
 
 /* APIKey is used to access the keys that we insert in the SlicingDice API.
