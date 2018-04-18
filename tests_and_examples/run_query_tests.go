@@ -34,16 +34,6 @@ func (s *SlicingDiceTester) runTests(queryType string) {
 	singleInsert := testData[0].(map[string]interface{})
 	s.perTestInsert = singleInsert["insert"] != nil
 
-	if !s.perTestInsert {
-		insertData := s.loadTestData(queryType, "_insert").([]interface{})
-		for _, sInsert := range insertData {
-			insert := sInsert.(map[string]interface{})
-			s.client.Insert(insert)
-		}
-
-		time.Sleep(time.Duration(s.sleepTime) * time.Second)
-	}
-
 	for i, test := range testData {
 		var err error
 		var result map[string]interface{}
@@ -364,7 +354,7 @@ func newSlicingDiceTester(apiKey string, verboseOption bool) (t *SlicingDiceTest
 	sdTester.verbose = verboseOption
 
 	// Sleep Time in seconds
-	sdTester.sleepTime = 5
+	sdTester.sleepTime = 10
 	// Path for examples
 	sdTester.path = "examples/"
 	// Examples files extension
@@ -414,12 +404,15 @@ func main() {
 		"sql",
 	}
 
+	apiKey, keySet := os.LookupEnv("SD_API_KEY")
+
+	if !keySet {
+		apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMTMzOG0iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMTMzOCwiY2xpZW50X2lkIjoxMH0.bMUl-VKH8Psjnkmchu0ixOhJti24REVsOCKlnpq6Wws"
+	}
+
 	// Testing class with demo API key
 	// You can get a new demo API key here: http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
-	sdTester := newSlicingDiceTester(
-		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiIxNTE4NjA3ODQ0NDAzIiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6NDY5NjYsImNsaWVudF9pZCI6OTUxfQ.S6LCWQDcLS1DEFy3lsqk2jTGIe5rJ5fsQIvWuuFBdkw",
-		false,
-	)
+	sdTester := newSlicingDiceTester(apiKey, false,)
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
