@@ -50,22 +50,22 @@ func (s *SlicingDiceTester) runTests(queryType string) {
 		if s.perTestInsert {
 			err = s.createColumns(testConverted)
 			if err != nil {
-				s.compareResult(testConverted, nil, err)
+				s.compareResult(testConverted, nil, err, queryType)
 				continue
 			}
 			err = s.insertData(testConverted)
 			if err != nil {
-				s.compareResult(testConverted, nil, err)
+				s.compareResult(testConverted, nil, err, queryType)
 				continue
 			}	
 		}
 		result, err = s.executeQuery(queryType, testConverted)
 		if err != nil {
-			s.compareResult(testConverted, nil, err)
+			s.compareResult(testConverted, nil, err, queryType)
 			continue
 		}
 
-		s.compareResult(testConverted, result, nil)
+		s.compareResult(testConverted, result, nil, queryType)
 	}
 }
 
@@ -214,7 +214,8 @@ func (s *SlicingDiceTester) executeQuery(queryType string, test map[string]inter
 }
 
 // Compare and assert result received from Slicing Dice API
-func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result map[string]interface{}, err error) {
+func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result map[string]interface{}, err error,
+	queryType string) {
 	expected := test["expected"].(map[string]interface{})
 	if s.perTestInsert {
 		expected = s.translateColumnNames(test["expected"].(map[string]interface{}), false)
@@ -233,21 +234,43 @@ func (s *SlicingDiceTester) compareResult(test map[string]interface{}, result ma
 			}
 
 			if !s.compareJSONValue(result[key], expected[key]) {
-				resultData, _ := json.Marshal(result[key])
-				expectedData, _ := json.Marshal(expected[key])
+				if !s.testSecondTime(test, expected, key, queryType) {
+					resultData, _ := json.Marshal(result[key])
+					expectedData, _ := json.Marshal(expected[key])
 
-				s.numFails += 1
-				s.failedTests = append(s.failedTests, test["name"].(string))
+					s.numFails += 1
+					s.failedTests = append(s.failedTests, test["name"].(string))
 
-				fmt.Printf("  Expected: \"%v\": %v\n", key, string(expectedData))
-				fmt.Printf("  Result: \"result\": %v\n", string(resultData))
-				fmt.Println("  Status: Failed\n")
-				return
+					fmt.Printf("  Expected: \"%v\": %v\n", key, string(expectedData))
+					fmt.Printf("  Result: \"result\": %v\n", string(resultData))
+					fmt.Println("  Status: Failed\n")
+					return
+				}
 			} else {
 				s.numSuccess += 1
 				fmt.Println("  Status: Passed\n")
 			}
 		}
+	}
+}
+
+func (s *SlicingDiceTester) testSecondTime(test map[string]interface{}, expected map[string]interface{},
+	key string, queryType string) bool {
+	fmt.Printf("Trying again")
+	time.Sleep(time.Duration(s.sleepTime) * time.Second)
+
+	result, err := s.executeQuery(queryType, test)
+	if err != nil {
+		return false
+	}
+
+	if !s.compareJSONValue(result[key], expected[key]) {
+		return false
+	} else {
+		fmt.Printf("  Passed at second try!")
+		s.numSuccess += 1
+		fmt.Println("  Status: Passed\n")
+		return true
 	}
 }
 
