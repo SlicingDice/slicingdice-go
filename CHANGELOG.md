@@ -1,5 +1,10 @@
 # Change Log
 
+## [2.0.2]
+### Updated
+- Change SQL endpoint from `/query/sql` to `sql`
+- Improve client tests
+
 ## [2.0.1]
 ### Updated
 - Add support  for SQL queries on client
