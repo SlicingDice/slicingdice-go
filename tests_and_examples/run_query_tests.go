@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"math"
 	"os/signal"
 	"strings"
 	"time"
@@ -312,6 +313,18 @@ func (s *SlicingDiceTester) compareJSONArray(expected []interface{}, got []inter
 	return true
 }
 
+var floatType = reflect.TypeOf(float64(0))
+
+func (s *SlicingDiceTester) getFloat(unk interface{}) (float64, error) {
+    v := reflect.ValueOf(unk)
+    v = reflect.Indirect(v)
+    if !v.Type().ConvertibleTo(floatType) {
+        return 0, fmt.Errorf("cannot convert %v to float64", v.Type())
+    }
+    fv := v.Convert(floatType)
+    return fv.Float(), nil
+}
+
 func (s *SlicingDiceTester) compareJSONValue(expected interface{}, got interface{}) bool {
 	if reflect.ValueOf(expected).Kind() == reflect.Map {
 		expectedMap := expected.(map[string]interface{})
@@ -325,18 +338,23 @@ func (s *SlicingDiceTester) compareJSONValue(expected interface{}, got interface
 		expected_type := reflect.TypeOf(expected)
 		expected_kind := expected_type.Kind()
 		if expected_kind == reflect.Int && s.isJsonNumber(got) {
-			fmt.Print(got)
 			f, _ := got.(json.Number).Int64()
 			return expected == f
 		} else if expected_kind == reflect.Float64 && s.isJsonNumber(got) {
-			fmt.Print(expected)
-			fmt.Print(got)
 			f, _ := got.(json.Number).Float64()
-			return expected == f
+			return s.floatIsClose(expected, f)
+		} else if expected_kind == reflect.Float64 {
+			return s.floatIsClose(expected, got)
 		} else {
 			return reflect.DeepEqual(expected, got)
 		}
 	}
+}
+
+func (s *SlicingDiceTester) floatIsClose(a interface{}, b interface{}) bool {
+	a_float, _ := s.getFloat(a)
+	b_float, _ := s.getFloat(b)
+	return math.Abs(a_float - b_float) <= math.Max(1e-09 * math.Max(math.Abs(a_float), math.Abs(b_float)), 0.0)
 }
 
 func (s *SlicingDiceTester) isJsonNumber(to_test interface{}) bool {
