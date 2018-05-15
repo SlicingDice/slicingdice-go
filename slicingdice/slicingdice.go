@@ -326,10 +326,17 @@ func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string
 	defer res.Body.Close()
 	contents, _ := ioutil.ReadAll(res.Body)
 	result := string(contents)
-	responseDecode := s.DecodeJSON(result).(map[string]interface{})
-	if len(responseDecode) == 0 {
-		return nil, &SDError{"Internal Error", nil, res.StatusCode}
+	decodeResponse, err := s.DecodeJSON(result)
+	if err != nil {
+		return nil, &SDError{"Response parsing error", result, res.StatusCode}
 	}
+
+	responseDecode, ok := decodeResponse.(map[string]interface{})
+
+	if !ok || len(responseDecode) == 0 {
+		return nil, &SDError{"Response parsing error", result, res.StatusCode}
+	}
+
 	if val, ok := responseDecode["errors"]; ok {
 		contentErrors := val.([]interface{})[0].(map[string]interface{})
 		var moreInfo interface{}
@@ -343,20 +350,18 @@ func (s *SlicingDice) handlerResponse(res *http.Response, err error) (map[string
 		return nil, &SDError{contentErrors["message"].(string), moreInfo, res.StatusCode}
 	}
 	if res.StatusCode >= 400 {
-		return nil, &SDError{"Unknown Error", nil, res.StatusCode}
+		return nil, &SDError{"Unknown Error", result, res.StatusCode}
 	}
 	return responseDecode, nil
 }
 
 // DecodeJSON converts string JSON to map[string]interface{}, its length is 0
 // in case of JSON parsing error
-func (s *SlicingDice) DecodeJSON(jsonData string) interface{} {
+func (s *SlicingDice) DecodeJSON(jsonData string) (interface{}, error) {
 	var f interface{}
 	d := json.NewDecoder(strings.NewReader(jsonData))
-	if err := d.Decode(&f); err != nil {
-		log.Fatal(err)
-	}
-	return f
+	err := d.Decode(&f)
+	return f, err
 }
 
 // GetDatabase gets information about the current SlicingDice database
