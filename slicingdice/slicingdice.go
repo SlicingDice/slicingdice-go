@@ -13,7 +13,6 @@ import (
 	"reflect"
 	"fmt"
 	"strings"
-	"log"
 )
 
 var sd_base = os.Getenv("SD_API_ADDRESS")
