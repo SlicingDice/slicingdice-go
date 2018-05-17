@@ -169,7 +169,8 @@ func (s *SlicingDiceTester) translateColumnNames(jsonData map[string]interface{}
 	if isRequest {
 		return s.decodeWithNumberJSON(dataString).(map[string]interface{})
 	} else {
-		return s.client.DecodeJSON(dataString).(map[string]interface{})
+		res, _ := s.client.DecodeJSON(dataString)
+		return res.(map[string]interface{})
 	}
 }
 
