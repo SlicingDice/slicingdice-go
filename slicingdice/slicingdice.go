@@ -32,6 +32,8 @@ const (
 	AGGREGATION        = "/query/aggregation/"
 	SAVED              = "/query/saved/"
 	SQL				   = "/sql/"
+	DELETE 			   = "/delete/"
+	UPDATE 			   = "/update/"
 )
 
 /* APIKey is used to access the keys that we insert in the SlicingDice API.
@@ -526,4 +528,14 @@ func (s *SlicingDice) UpdateSavedQuery(queryName string, query map[string]interf
 func (s *SlicingDice) Sql(query string) (map[string]interface{}, error) {
 	url := s.getFullUrl(SQL)
 	return s.makeRequestSQL(url, "POST", 0, query, true)
+}
+
+func (s *SlicingDice) Delete(query map[string]interface{}) (map[string]interface{}, error) {
+	url := s.getFullUrl(DELETE)
+	return s.makeRequest(url, "POST", 0, query)
+}
+
+func (s *SlicingDice) Update(query map[string]interface{}) (map[string]interface{}, error) {
+	url := s.getFullUrl(UPDATE)
+	return s.makeRequest(url, "POST", 0, query)
 }
