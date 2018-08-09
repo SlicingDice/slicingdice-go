@@ -36,6 +36,7 @@ func (s *SlicingDiceTester) runTests(queryType string) {
 	s.perTestInsert = singleInsert["insert"] != nil
 
 	for i, test := range testData {
+		queryType_ := queryType
 		var err error
 		var result map[string]interface{}
 		testConverted := test.(map[string]interface{})
@@ -60,14 +61,87 @@ func (s *SlicingDiceTester) runTests(queryType string) {
 				continue
 			}	
 		}
-		result, err = s.executeQuery(queryType, testConverted)
+
+		if queryType == "delete" || queryType == "update" {
+			result_additional := s.runAdditionalOperations(queryType, testConverted)
+			if !result_additional {
+				continue
+			}
+			queryType_ = "count_entity"
+		}
+
+		result, err = s.executeQuery(queryType_, testConverted)
 		if err != nil {
+			if queryType == "delete" || queryType == "update" {
+				s.numFails += 1
+				s.failedTests = append(s.failedTests, testConverted["name"].(string))
+				expectedData, _ := json.Marshal(testConverted["expected"])
+				fmt.Printf("  Expected: \"%v\": %v\n", "result", string(expectedData))
+				fmt.Printf("  Result: \"result\": %v\n", err)
+				fmt.Println("  Status: Failed\n")
+				continue
+			}
 			s.compareResult(testConverted, nil, err, queryType)
 			continue
 		}
 
 		s.compareResult(testConverted, result, nil, queryType)
 	}
+}
+
+// Method used to run delete and update operations, this operations
+// are executed before the query and the result comparison
+func (s *SlicingDiceTester) runAdditionalOperations(queryType string, test map[string]interface{}) bool {
+	queryData := s.translateColumnNames(test["additional_operation"].(map[string]interface{}), false)
+	if queryType == "delete" {
+		fmt.Println("  Deleting")
+	} else {
+		fmt.Println("  Updating")
+	}
+
+	if s.verbose {
+		fmt.Println("    - %v", queryData)
+	}
+
+	var result map[string]interface{}
+	var err error
+	if queryType == "delete" {
+		result, err = s.client.Delete(queryData)
+	} else if queryType == "update" {
+		result, err = s.client.Update(queryData)
+	}
+
+	expected := s.translateColumnNames(test["result_additional"].(map[string]interface{}), false)
+	if result == nil {
+		s.numFails += 1
+		s.failedTests = append(s.failedTests, test["name"].(string))
+		fmt.Printf("  Expected: \"%v\": %v\n", "result", expected)
+		fmt.Printf("  Result: \"result\": %v\n", err)
+		fmt.Println("  Status: Failed\n")
+		return false
+	}
+
+	for key, value := range expected {
+		if value == "ignore" {
+			continue
+		}
+
+		if !s.compareJSONValue(result[key], expected[key]) {
+			s.numFails += 1
+			s.failedTests = append(s.failedTests, test["name"].(string))
+
+			fmt.Printf("  Expected: \"%v\": %v\n", key, expected)
+			fmt.Printf("  Result: \"result\": %v\n", result)
+			fmt.Println("  Status: Failed\n")
+			return false
+		} else {
+			s.numSuccess += 1
+			fmt.Println("  Status: Passed\n")
+			return true
+		}
+	}
+
+	return true
 }
 
 // Create columns on Slicing Dice API
@@ -436,7 +510,7 @@ func printResults(sdTester *SlicingDiceTester) {
 
 func main() {
 	// SlicingDice queries to be tested. Must match the JSON file name.
-	var queryTypes = [7]string{
+	var queryTypes = [9]string{
 		"count_entity",
 		"count_event",
 		"top_values",
@@ -444,6 +518,8 @@ func main() {
 		"result",
 		"score",
 		"sql",
+		"delete",
+		"update",
 	}
 
 	apiKey, keySet := os.LookupEnv("SD_API_KEY")
@@ -454,7 +530,7 @@ func main() {
 
 	// Testing class with demo API key
 	// You can get a new demo API key here: http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
-	sdTester := newSlicingDiceTester(apiKey, false,)
+	sdTester := newSlicingDiceTester(apiKey, true,)
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
