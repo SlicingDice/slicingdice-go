@@ -142,8 +142,8 @@ func hasValidColumn(query interface{}) error {
 func validateColumn(query map[string]interface{}) error {
 	validTypeColumns := []string{
 		"unique-id", "boolean", "string", "integer", "decimal",
-		"enumerated", "date", "integer-time-series",
-		"decimal-time-series", "string-time-series", "datetime",
+		"enumerated", "date", "integer-event",
+		"decimal-event", "string-event", "datetime",
 	}
 	// validate name
 	if _, ok := query["name"]; !ok {
@@ -170,9 +170,9 @@ func validateColumn(query map[string]interface{}) error {
 	}
 	// validate decimal place key
 	if _, ok := query["decimal-place"]; ok {
-		decimalTypes := []string{"decimal", "decimal-time-series"}
+		decimalTypes := []string{"decimal", "decimal-event"}
 		if !stringInSlice(query["type"].(string), decimalTypes) {
-			return errors.New("Column Validator: this column is only accepted on type 'decimal' or 'decimal-time-series'.")
+			return errors.New("Column Validator: this column is only accepted on type 'decimal' or 'decimal-event'.")
 		}
 	}
 	// validate string column type
